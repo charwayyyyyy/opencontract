@@ -13,6 +13,7 @@ const publicNavItems = [
   { href: "/explore", label: "Explore" },
   { href: "/verify", label: "Verify" },
   { href: "/signals", label: "Signals" },
+  { href: "/analyst", label: "AI Analyst" },
   { href: "/organizations", label: "Organizations" },
   { href: "/about", label: "About" },
 ] as const;

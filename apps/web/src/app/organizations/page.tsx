@@ -14,9 +14,11 @@ export const metadata: Metadata = {
 
 export const revalidate = 300;
 
+import { DEMO_ORGANIZATIONS } from "@/services/procurement/demo-data";
+
 async function getOrganizations() {
   try {
-    return await prisma.organization.findMany({
+    const orgs = await prisma.organization.findMany({
       where: { isActive: true },
       orderBy: [{ type: "asc" }, { name: "asc" }],
       include: {
@@ -30,8 +32,13 @@ async function getOrganizations() {
         },
       },
     });
+
+    if (orgs.length === 0) {
+      return DEMO_ORGANIZATIONS;
+    }
+    return orgs;
   } catch {
-    return [];
+    return DEMO_ORGANIZATIONS;
   }
 }
 

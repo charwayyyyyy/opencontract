@@ -14,6 +14,10 @@ import type {
 } from "@opencontract/types";
 import type { z } from "zod";
 import type { searchProcurementsSchema } from "@opencontract/validation";
+import {
+  searchDemoProcurements,
+  getDemoProcurementByOcid,
+} from "./demo-data";
 
 type SearchParams = z.infer<typeof searchProcurementsSchema>;
 
@@ -30,8 +34,9 @@ export interface ProcurementListResult {
 export async function searchProcurements(
   params: SearchParams
 ): Promise<ProcurementListResult> {
-  const { q, status, method, region, minValue, maxValue, year, page, pageSize, sortBy, sortOrder } =
-    params;
+  try {
+    const { q, status, method, region, minValue, maxValue, year, page, pageSize, sortBy, sortOrder } =
+      params;
 
   const where: Parameters<typeof prisma.procurement.findMany>[0]["where"] = {
     status: { not: "DRAFT" }, // never expose drafts to public
@@ -116,7 +121,15 @@ export async function searchProcurements(
     hasVerifiedDocuments: p.documents.length > 0,
   }));
 
-  return { items, total, page, pageSize, hasMore: skip + items.length < total };
+    if (total === 0 && !q && !status && !method && !region && minValue === undefined && maxValue === undefined && !year) {
+      return searchDemoProcurements(params);
+    }
+
+    return { items, total, page, pageSize, hasMore: skip + items.length < total };
+  } catch (error) {
+    console.warn("[searchProcurements] Database unreachable, serving demo data:", error);
+    return searchDemoProcurements(params);
+  }
 }
 
 // ─── Single Procurement Detail ─────────────────────────────────
@@ -124,8 +137,9 @@ export async function searchProcurements(
 export async function getProcurementByOcid(
   ocid: string
 ): Promise<ProcurementDetail | null> {
-  const p = await prisma.procurement.findUnique({
-    where: { ocid },
+  try {
+    const p = await prisma.procurement.findUnique({
+      where: { ocid },
     include: {
       procuringEntity: { select: { id: true, name: true, shortName: true } },
       tender: {
@@ -174,7 +188,9 @@ export async function getProcurementByOcid(
     },
   });
 
-  if (!p || p.status === "DRAFT") return null;
+    if (!p || p.status === "DRAFT") {
+      return getDemoProcurementByOcid(ocid);
+    }
 
   // Build timeline
   const timeline = buildTimeline(p);
@@ -312,6 +328,10 @@ export async function getProcurementByOcid(
 
     blockchainAnchors: p.blockchainAnchors.map(mapAnchorSummary),
   };
+  } catch (error) {
+    console.warn("[getProcurementByOcid] Database unreachable, serving demo data:", error);
+    return getDemoProcurementByOcid(ocid);
+  }
 }
 
 // ─── Helper Mappers ────────────────────────────────────────────

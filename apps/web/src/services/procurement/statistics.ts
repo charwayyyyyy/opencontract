@@ -6,6 +6,7 @@
 
 import { prisma } from "@opencontract/database/client";
 import type { PublicStatistics } from "@opencontract/types";
+import { DEMO_STATISTICS } from "./demo-data";
 
 export async function getPublicStatistics(): Promise<PublicStatistics> {
   try {
@@ -38,6 +39,10 @@ export async function getPublicStatistics(): Promise<PublicStatistics> {
       }),
     ]);
 
+    if (totalProcurements === 0) {
+      return DEMO_STATISTICS;
+    }
+
     return {
       totalProcurements,
       activeTenders,
@@ -47,14 +52,6 @@ export async function getPublicStatistics(): Promise<PublicStatistics> {
       verifiedDocuments,
     };
   } catch {
-    // Return zeros gracefully if DB not yet seeded
-    return {
-      totalProcurements: 0,
-      activeTenders: 0,
-      activeContracts: 0,
-      totalContractValue: "0",
-      pendingSignals: 0,
-      verifiedDocuments: 0,
-    };
+    return DEMO_STATISTICS;
   }
 }

@@ -15,9 +15,11 @@ export const metadata: Metadata = {
 
 export const revalidate = 300;
 
+import { DEMO_SIGNALS } from "@/services/procurement/demo-data";
+
 async function getSignals() {
   try {
-    return await prisma.integritySignal.findMany({
+    const signals = await prisma.integritySignal.findMany({
       where: { isResolved: false },
       orderBy: [{ severity: "asc" }, { createdAt: "desc" }],
       include: {
@@ -30,8 +32,13 @@ async function getSignals() {
         },
       },
     });
+
+    if (signals.length === 0) {
+      return DEMO_SIGNALS;
+    }
+    return signals;
   } catch {
-    return [];
+    return DEMO_SIGNALS;
   }
 }
 
