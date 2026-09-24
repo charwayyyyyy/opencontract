@@ -1,0 +1,700 @@
+// OpenContract — Prisma Schema
+// PostgreSQL + Prisma ORM
+// All monetary values use Decimal (never Float)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// ENUMERATIONS
+// ============================================================
+
+enum UserRole {
+  PUBLIC
+  CONTRACTOR
+  PROCUREMENT_OFFICER
+  EVALUATOR
+  AUDITOR
+  ADMIN
+}
+
+enum OrganizationType {
+  PUBLIC_ENTITY
+  CONTRACTOR
+  AUDITOR
+  CIVIL_SOCIETY
+  RESEARCHER
+}
+
+enum ProcurementStatus {
+  DRAFT
+  PUBLISHED
+  OPEN
+  CLOSED
+  EVALUATION
+  AWARDED
+  CONTRACTED
+  IMPLEMENTATION
+  COMPLETED
+  CANCELLED
+}
+
+enum ProcurementMethod {
+  OPEN_TENDERING
+  RESTRICTED_TENDERING
+  REQUEST_FOR_QUOTATION
+  SINGLE_SOURCE
+  FRAMEWORK_AGREEMENT
+  DIRECT_AWARD
+}
+
+enum TenderStatus {
+  DRAFT
+  PUBLISHED
+  OPEN
+  CLOSED
+  CANCELLED
+}
+
+enum BidStatus {
+  DRAFT
+  SUBMITTED
+  WITHDRAWN
+  DISQUALIFIED
+  SHORTLISTED
+  AWARDED
+  UNSUCCESSFUL
+}
+
+enum AwardStatus {
+  PENDING
+  PUBLISHED
+  CANCELLED
+  WITHDRAWN
+}
+
+enum ContractStatus {
+  DRAFT
+  ACTIVE
+  AMENDED
+  SUSPENDED
+  COMPLETED
+  TERMINATED
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSED
+  FAILED
+  REVERSED
+}
+
+enum MilestoneStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  DELAYED
+  CANCELLED
+}
+
+enum DocumentVisibility {
+  PUBLIC
+  RESTRICTED
+  PRIVATE
+}
+
+enum DocumentCategory {
+  TENDER_NOTICE
+  BID_DOCUMENT
+  EVALUATION_REPORT
+  AWARD_NOTICE
+  CONTRACT_DOCUMENT
+  AMENDMENT_DOCUMENT
+  PAYMENT_CERTIFICATE
+  INSPECTION_REPORT
+  COMPLETION_CERTIFICATE
+  OTHER
+}
+
+enum DocumentStatus {
+  UPLOADING
+  PROCESSING
+  REGISTERED
+  FAILED
+}
+
+enum BlockchainAnchorStatus {
+  PENDING
+  SUBMITTED
+  CONFIRMED
+  FAILED
+}
+
+enum BlockchainEventType {
+  PROCUREMENT_CREATED
+  TENDER_PUBLISHED
+  BID_COMMITTED
+  SUBMISSIONS_CLOSED
+  BIDS_OPENED
+  EVALUATION_PUBLISHED
+  AWARD_PUBLISHED
+  CONTRACT_CREATED
+  CONTRACT_AMENDED
+  PAYMENT_RECORDED
+  MILESTONE_RECORDED
+  INSPECTION_RECORDED
+  CONTRACT_COMPLETED
+}
+
+enum AuditAction {
+  USER_CREATED
+  USER_UPDATED
+  ROLE_CHANGED
+  PROCUREMENT_CREATED
+  PROCUREMENT_UPDATED
+  PROCUREMENT_PUBLISHED
+  TENDER_PUBLISHED
+  BID_SUBMITTED
+  BID_CLOSED
+  EVALUATION_CREATED
+  AWARD_PUBLISHED
+  CONTRACT_CREATED
+  CONTRACT_AMENDED
+  PAYMENT_RECORDED
+  DOCUMENT_UPLOADED
+  DOCUMENT_VERIFIED
+  BLOCKCHAIN_ANCHOR_REQUESTED
+  BLOCKCHAIN_ANCHOR_CONFIRMED
+  BLOCKCHAIN_ANCHOR_FAILED
+  SIGNAL_GENERATED
+}
+
+enum SignalType {
+  SINGLE_BIDDER
+  SIGNIFICANT_AMENDMENT
+  DELAYED_IMPLEMENTATION
+  MISSING_UPDATE
+  SUPPLIER_CONCENTRATION
+}
+
+enum SignalSeverity {
+  INFO
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// ============================================================
+// USERS & ORGANIZATIONS
+// ============================================================
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  name          String
+  passwordHash  String?
+  role          UserRole @default(PUBLIC)
+  emailVerified Boolean  @default(false)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  organizationMembers OrganizationMember[]
+  uploadedDocuments   Document[]           @relation("UploadedBy")
+  auditLogs           AuditLog[]
+  aiQueries           AIQuery[]
+  sessions            Session[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+}
+
+model Organization {
+  id          String           @id @default(cuid())
+  name        String
+  shortName   String?
+  type        OrganizationType
+  description String?
+  country     String           @default("GH")
+  region      String?
+  address     String?
+  website     String?
+  identifier  String?          @unique // Official registry identifier
+  isDemo      Boolean          @default(false)
+  isActive    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  members       OrganizationMember[]
+  procurements  Procurement[]        @relation("ProcuringEntity")
+  bids          Bid[]
+  awards        Award[]
+  contracts     Contract[]
+
+  @@index([type])
+  @@index([name])
+}
+
+model OrganizationMember {
+  id             String   @id @default(cuid())
+  userId         String
+  organizationId String
+  role           String   // e.g. OFFICER, EVALUATOR, VIEWER
+  isActive       Boolean  @default(true)
+  joinedAt       DateTime @default(now())
+
+  user         User         @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([userId, organizationId])
+  @@index([userId])
+  @@index([organizationId])
+}
+
+// ============================================================
+// PROCUREMENT LIFECYCLE
+// ============================================================
+
+model Procurement {
+  id                   String            @id @default(cuid())
+  ocid                 String            @unique
+  title                String
+  description          String?
+  procuringEntityId    String
+  procurementMethod    ProcurementMethod @default(OPEN_TENDERING)
+  status               ProcurementStatus @default(DRAFT)
+  currency             String            @default("GHS")
+  estimatedValue       Decimal?          @db.Decimal(18, 2)
+  category             String?
+  region               String?
+  isDemo               Boolean           @default(false)
+  publishedAt          DateTime?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  procuringEntity  Organization       @relation("ProcuringEntity", fields: [procuringEntityId], references: [id])
+  tender           Tender?
+  awards           Award[]
+  contracts        Contract[]
+  documents        Document[]
+  blockchainAnchors BlockchainAnchor[]
+  auditLogs        AuditLog[]
+  integritySignals IntegritySignal[]
+
+  @@index([ocid])
+  @@index([status])
+  @@index([procuringEntityId])
+  @@index([publishedAt])
+  @@index([region])
+}
+
+model Tender {
+  id                     String       @id @default(cuid())
+  procurementId          String       @unique
+  title                  String
+  description            String?
+  openingDate            DateTime
+  closingDate            DateTime
+  procurementMethod      ProcurementMethod
+  eligibilityRequirements String?
+  evaluationCriteria     String?
+  status                 TenderStatus @default(DRAFT)
+  publishedAt            DateTime?
+  createdAt              DateTime     @default(now())
+  updatedAt              DateTime     @updatedAt
+
+  procurement Procurement @relation(fields: [procurementId], references: [id])
+  lots        TenderLot[]
+  bids        Bid[]
+  documents   Document[]
+
+  @@index([procurementId])
+  @@index([status])
+  @@index([closingDate])
+}
+
+model TenderLot {
+  id          String   @id @default(cuid())
+  tenderId    String
+  lotNumber   Int
+  title       String
+  description String?
+  estimatedValue Decimal? @db.Decimal(18, 2)
+  currency    String   @default("GHS")
+  createdAt   DateTime @default(now())
+
+  tender Tender @relation(fields: [tenderId], references: [id])
+
+  @@index([tenderId])
+}
+
+model Bid {
+  id             String    @id @default(cuid())
+  tenderId       String
+  bidderId       String
+  submissionRef  String    @unique
+  submittedAt    DateTime  @default(now())
+  status         BidStatus @default(SUBMITTED)
+  amount         Decimal?  @db.Decimal(18, 2)
+  currency       String    @default("GHS")
+  notes          String?
+  isConfidential Boolean   @default(true) // true until appropriate stage
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  tender    Tender    @relation(fields: [tenderId], references: [id])
+  bidder    Organization @relation(fields: [bidderId], references: [id])
+  documents BidDocument[]
+  blockchainAnchors BlockchainAnchor[]
+
+  @@index([tenderId])
+  @@index([bidderId])
+  @@index([status])
+  @@index([submissionRef])
+}
+
+model BidDocument {
+  id         String   @id @default(cuid())
+  bidId      String
+  documentId String
+  createdAt  DateTime @default(now())
+
+  bid      Bid      @relation(fields: [bidId], references: [id])
+  document Document @relation(fields: [documentId], references: [id])
+
+  @@unique([bidId, documentId])
+}
+
+model Evaluation {
+  id            String   @id @default(cuid())
+  procurementId String   @unique
+  evaluationDate DateTime
+  evaluators    String[]
+  criteria      String?
+  summary       String?
+  result        String?
+  publishedAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  documents Document[]
+
+  @@index([procurementId])
+}
+
+model Award {
+  id             String      @id @default(cuid())
+  procurementId  String
+  supplierId     String
+  amount         Decimal     @db.Decimal(18, 2)
+  currency       String      @default("GHS")
+  awardDate      DateTime
+  status         AwardStatus @default(PENDING)
+  justification  String?
+  publishedAt    DateTime?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  procurement Procurement  @relation(fields: [procurementId], references: [id])
+  supplier    Organization @relation(fields: [supplierId], references: [id])
+  documents   Document[]
+  blockchainAnchors BlockchainAnchor[]
+
+  @@index([procurementId])
+  @@index([supplierId])
+  @@index([status])
+}
+
+// ============================================================
+// CONTRACT LIFECYCLE
+// ============================================================
+
+model Contract {
+  id                String         @id @default(cuid())
+  contractRef       String         @unique
+  procurementId     String
+  supplierId        String
+  originalAmount    Decimal        @db.Decimal(18, 2)
+  currentAmount     Decimal        @db.Decimal(18, 2)
+  currency          String         @default("GHS")
+  startDate         DateTime
+  endDate           DateTime?
+  status            ContractStatus @default(DRAFT)
+  description       String?
+  signedAt          DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  procurement  Procurement         @relation(fields: [procurementId], references: [id])
+  supplier     Organization        @relation(fields: [supplierId], references: [id])
+  amendments   ContractAmendment[]
+  payments     Payment[]
+  milestones   Milestone[]
+  inspections  Inspection[]
+  documents    Document[]
+  blockchainAnchors BlockchainAnchor[]
+
+  @@index([procurementId])
+  @@index([supplierId])
+  @@index([status])
+  @@index([contractRef])
+}
+
+model ContractAmendment {
+  id             String   @id @default(cuid())
+  contractId     String
+  amendmentNumber Int
+  reason         String
+  previousAmount Decimal  @db.Decimal(18, 2)
+  newAmount      Decimal  @db.Decimal(18, 2)
+  currency       String   @default("GHS")
+  effectiveDate  DateTime
+  description    String?
+  createdAt      DateTime @default(now())
+
+  contract  Contract   @relation(fields: [contractId], references: [id])
+  documents Document[]
+  blockchainAnchors BlockchainAnchor[]
+
+  @@index([contractId])
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  contractId  String
+  amount      Decimal       @db.Decimal(18, 2)
+  currency    String        @default("GHS")
+  paymentDate DateTime
+  reference   String
+  description String?
+  status      PaymentStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  contract  Contract   @relation(fields: [contractId], references: [id])
+  documents Document[]
+  blockchainAnchors BlockchainAnchor[]
+
+  @@index([contractId])
+  @@index([status])
+}
+
+model Milestone {
+  id             String          @id @default(cuid())
+  contractId     String
+  title          String
+  description    String?
+  plannedDate    DateTime
+  actualDate     DateTime?
+  completionPct  Int             @default(0) // 0-100
+  status         MilestoneStatus @default(PENDING)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  contract  Contract   @relation(fields: [contractId], references: [id])
+  blockchainAnchors BlockchainAnchor[]
+
+  @@index([contractId])
+}
+
+model Inspection {
+  id           String   @id @default(cuid())
+  contractId   String
+  inspectorName String
+  inspectionDate DateTime
+  findings     String?
+  recommendation String?
+  createdAt    DateTime @default(now())
+
+  contract  Contract   @relation(fields: [contractId], references: [id])
+  documents Document[]
+  blockchainAnchors BlockchainAnchor[]
+
+  @@index([contractId])
+}
+
+// ============================================================
+// DOCUMENTS
+// ============================================================
+
+model Document {
+  id           String             @id @default(cuid())
+  filename     String
+  originalName String
+  mimeType     String
+  sizeBytes    BigInt
+  storageKey   String
+  sha256       String
+  visibility   DocumentVisibility @default(PUBLIC)
+  category     DocumentCategory   @default(OTHER)
+  status       DocumentStatus     @default(REGISTERED)
+  uploadedById String
+  isDemo       Boolean            @default(false)
+
+  // Optional relations — document can be attached to many things
+  procurementId    String?
+  tenderId         String?
+  evaluationId     String?
+  awardId          String?
+  contractId       String?
+  amendmentId      String?
+  paymentId        String?
+  inspectionId     String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  uploadedBy   User                @relation("UploadedBy", fields: [uploadedById], references: [id])
+  procurement  Procurement?        @relation(fields: [procurementId], references: [id])
+  tender       Tender?             @relation(fields: [tenderId], references: [id])
+  evaluation   Evaluation?         @relation(fields: [evaluationId], references: [id])
+  award        Award?              @relation(fields: [awardId], references: [id])
+  contract     Contract?           @relation(fields: [contractId], references: [id])
+  amendment    ContractAmendment?  @relation(fields: [amendmentId], references: [id])
+  payment      Payment?            @relation(fields: [paymentId], references: [id])
+  inspection   Inspection?         @relation(fields: [inspectionId], references: [id])
+  bidDocuments BidDocument[]
+  blockchainAnchors BlockchainAnchor[]
+
+  @@index([sha256])
+  @@index([uploadedById])
+  @@index([procurementId])
+  @@index([visibility])
+  @@index([category])
+}
+
+// ============================================================
+// BLOCKCHAIN
+// ============================================================
+
+model BlockchainAnchor {
+  id            String                 @id @default(cuid())
+  eventType     BlockchainEventType
+  status        BlockchainAnchorStatus @default(PENDING)
+  network       String
+  contractAddress String?
+  transactionHash String?
+  blockNumber   BigInt?
+  confirmedAt   DateTime?
+  failedAt      DateTime?
+  failureReason String?
+  dataHash      String                 // canonical hash of anchored data
+  retryCount    Int                    @default(0)
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+
+  // Relations — an anchor can reference many entity types
+  procurementId String?
+  bidId         String?
+  awardId       String?
+  contractId    String?
+  amendmentId   String?
+  paymentId     String?
+  milestoneId   String?
+  inspectionId  String?
+  documentId    String?
+
+  procurement Procurement?       @relation(fields: [procurementId], references: [id])
+  bid         Bid?               @relation(fields: [bidId], references: [id])
+  award       Award?             @relation(fields: [awardId], references: [id])
+  contract    Contract?          @relation(fields: [contractId], references: [id])
+  amendment   ContractAmendment? @relation(fields: [amendmentId], references: [id])
+  payment     Payment?           @relation(fields: [paymentId], references: [id])
+  milestone   Milestone?         @relation(fields: [milestoneId], references: [id])
+  inspection  Inspection?        @relation(fields: [inspectionId], references: [id])
+  document    Document?          @relation(fields: [documentId], references: [id])
+
+  @@index([status])
+  @@index([eventType])
+  @@index([transactionHash])
+  @@index([procurementId])
+  @@index([dataHash])
+}
+
+// ============================================================
+// AUDIT & INTEGRITY
+// ============================================================
+
+model AuditLog {
+  id            String      @id @default(cuid())
+  action        AuditAction
+  userId        String?
+  procurementId String?
+  entityType    String?
+  entityId      String?
+  previousState Json?
+  newState      Json?
+  metadata      Json?
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime    @default(now())
+
+  user        User?        @relation(fields: [userId], references: [id])
+  procurement Procurement? @relation(fields: [procurementId], references: [id])
+
+  @@index([action])
+  @@index([userId])
+  @@index([procurementId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+model IntegritySignal {
+  id            String        @id @default(cuid())
+  procurementId String
+  signalType    SignalType
+  severity      SignalSeverity
+  triggered     Boolean       @default(true)
+  explanation   String
+  evidence      Json
+  isResolved    Boolean       @default(false)
+  resolvedAt    DateTime?
+  resolvedNote  String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  procurement Procurement @relation(fields: [procurementId], references: [id])
+
+  @@index([procurementId])
+  @@index([signalType])
+  @@index([severity])
+  @@index([isResolved])
+}
+
+// ============================================================
+// AI
+// ============================================================
+
+model AIQuery {
+  id         String   @id @default(cuid())
+  userId     String?
+  question   String
+  response   String
+  evidence   Json?    // structured evidence records returned
+  queryMs    Int?     // response time in ms
+  createdAt  DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([createdAt])
+}

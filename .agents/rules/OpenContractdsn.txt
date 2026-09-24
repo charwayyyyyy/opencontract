@@ -1,0 +1,2038 @@
+# OpenContract
+
+## Design System & UX Guidelines
+
+**File:** `docs/design.md`
+**Status:** Visual and UX Source of Truth
+**Version:** 1.0
+
+---
+
+# 1. Purpose
+
+This document defines the visual language, interaction principles and UX standards for OpenContract.
+
+The AI coding agent MUST read this file before creating or modifying UI.
+
+The goal is not to make OpenContract look "beautiful" in the generic AI-generated sense.
+
+The goal is to make it feel like a serious public infrastructure product.
+
+The interface should communicate:
+
+> "This is information I can inspect and understand."
+
+Not:
+
+> "This is a Web3 demo."
+
+---
+
+# 2. Design Personality
+
+OpenContract should feel:
+
+* calm;
+* trustworthy;
+* editorial;
+* civic;
+* precise;
+* modern;
+* transparent;
+* restrained;
+* intelligent;
+* approachable.
+
+Visual references in spirit:
+
+```text
+modern civic technology
+financial reporting
+editorial data journalism
+institutional software
+modern public records
+Apple-like restraint
+high-quality research tools
+```
+
+These are references for principles, not templates to copy.
+
+---
+
+# 3. What OpenContract Must NOT Look Like
+
+Do not use:
+
+* neon crypto gradients;
+* black Web3 dashboards;
+* glowing blockchain nodes;
+* 3D coins;
+* giant purple/blue gradients;
+* AI sparkle icons everywhere;
+* excessive glassmorphism;
+* excessive blur;
+* floating cards everywhere;
+* oversized rounded pills;
+* generic SaaS dashboards;
+* excessive shadows;
+* animated numbers everywhere;
+* giant hero typography with little information;
+* meaningless decorative charts;
+* fake "AI" visual effects;
+* cyberpunk aesthetics.
+
+Do not use blockchain imagery as decoration.
+
+Blockchain should be represented through information and verification.
+
+---
+
+# 4. Color Philosophy
+
+The interface should be light-first.
+
+Primary background:
+
+```text
+warm off-white / paper white
+```
+
+Primary text:
+
+```text
+deep graphite
+```
+
+Secondary text:
+
+```text
+muted graphite
+```
+
+Supporting colors:
+
+```text
+muted green
+muted blue
+muted amber
+muted red
+```
+
+Colors should communicate meaning.
+
+Do not use saturated colors unnecessarily.
+
+---
+
+# 5. Semantic Color Usage
+
+## Green
+
+Use for:
+
+* verified;
+* confirmed;
+* completed;
+* successful.
+
+## Amber
+
+Use for:
+
+* pending;
+* review;
+* attention;
+* incomplete information.
+
+## Red
+
+Use sparingly for:
+
+* errors;
+* failed transactions;
+* destructive actions;
+* document mismatch.
+
+Do NOT use red simply because a procurement has a review signal.
+
+## Blue
+
+Use for:
+
+* links;
+* informational actions;
+* selected navigation;
+* neutral system information.
+
+---
+
+# 6. Color Rule
+
+Never make the interface dependent on color alone.
+
+For example:
+
+Bad:
+
+```text
+green dot = verified
+```
+
+Better:
+
+```text
+✓ Verified
+```
+
+with supporting color.
+
+---
+
+# 7. Typography
+
+Typography should feel editorial and institutional.
+
+Use one strong primary interface typeface.
+
+Optional secondary display type may be used sparingly.
+
+Do not use novelty fonts for core application UI.
+
+Hierarchy should be obvious:
+
+```text
+Display
+Page title
+Section heading
+Card heading
+Body
+Secondary
+Metadata
+```
+
+Avoid excessive font-weight variation.
+
+---
+
+# 8. Layout Philosophy
+
+Use generous whitespace.
+
+The interface should breathe.
+
+Prefer:
+
+```text
+clear grid
+strong alignment
+consistent margins
+structured information
+```
+
+over:
+
+```text
+dense card walls
+random spacing
+floating elements
+```
+
+The platform handles complicated information.
+
+The design should reduce cognitive load rather than add visual complexity.
+
+---
+
+# 9. Grid
+
+Use a consistent responsive grid.
+
+Desktop layouts should generally use a centered content container.
+
+Long-form procurement pages may use:
+
+```text
+main content
++
+secondary contextual column
+```
+
+but do not force every page into a two-column layout.
+
+---
+
+# 10. Border Radius
+
+Use moderate radii.
+
+Avoid:
+
+```text
+everything is a pill
+```
+
+Buttons can have modest rounding.
+
+Cards can have moderate rounding.
+
+Large containers should not look like floating balloons.
+
+---
+
+# 11. Shadows
+
+Use shadows sparingly.
+
+Prefer:
+
+```text
+border
+background contrast
+subtle elevation
+```
+
+over:
+
+```text
+large soft shadows
+```
+
+The product should feel grounded.
+
+---
+
+# 12. Glassmorphism
+
+Glass effects are optional and should be used sparingly.
+
+If used:
+
+* keep opacity subtle;
+* preserve readability;
+* avoid excessive blur;
+* never use glass for every card;
+* never make critical information translucent.
+
+OpenContract should remain usable without decorative effects.
+
+---
+
+# 13. Motion
+
+Animation should communicate state or hierarchy.
+
+Good uses:
+
+* page transitions;
+* expanding timeline items;
+* upload progress;
+* status transitions;
+* modal appearance;
+* subtle hover feedback;
+* skeleton loading.
+
+Bad uses:
+
+* constantly moving backgrounds;
+* floating particles;
+* animated blockchain graphics;
+* excessive parallax;
+* bouncing cards;
+* decorative infinite animations.
+
+Respect:
+
+```text
+prefers-reduced-motion
+```
+
+---
+
+# 14. Navigation
+
+Public navigation should be simple.
+
+Primary navigation:
+
+```text
+Explore
+Verify
+Signals
+Organizations
+About
+```
+
+Also provide:
+
+```text
+Search
+Sign in
+```
+
+Authenticated users receive role-specific navigation.
+
+Do not overload the top navigation.
+
+---
+
+# 15. Header
+
+The header should feel institutional rather than promotional.
+
+Logo and product name should be clear.
+
+Navigation should have strong hierarchy.
+
+Avoid giant navigation bars.
+
+Mobile navigation should use a clean accessible menu.
+
+---
+
+# 16. Homepage
+
+The homepage should immediately explain the product.
+
+Primary message:
+
+> PUBLIC MONEY SHOULD LEAVE A PUBLIC TRAIL.
+
+Supporting message should explain that OpenContract makes procurement records easier to trace and verify.
+
+The hero should not make blockchain the headline.
+
+Blockchain is supporting infrastructure.
+
+---
+
+# 17. Homepage Structure
+
+Recommended:
+
+```text
+Header
+
+Hero
+  Product statement
+  Explanation
+  Explore CTA
+  Verify CTA
+
+Procurement lifecycle
+
+Public data snapshot
+
+How verification works
+
+Integrity signals
+
+Blockchain proof
+
+AI analyst
+
+Methodology / limitations
+
+Footer
+```
+
+Avoid turning the homepage into a wall of marketing cards.
+
+---
+
+# 18. Public Explorer
+
+The explorer should feel like a research tool.
+
+Top:
+
+```text
+Explore procurements
+Search...
+Filters...
+```
+
+Results should emphasize:
+
+```text
+title
+organization
+supplier
+value
+status
+date
+review signals
+```
+
+Avoid giant cards.
+
+A list/table hybrid is preferred on desktop.
+
+Mobile should transform rows into readable stacked records.
+
+---
+
+# 19. Search
+
+Search should support natural terms where practical.
+
+Examples:
+
+```text
+classroom
+supplier name
+OCID
+contract reference
+organization
+```
+
+Search results should make it obvious why each result matched.
+
+---
+
+# 20. Filters
+
+Filters should be understandable.
+
+Potential filters:
+
+```text
+Status
+Organization
+Supplier
+Date
+Value
+Procurement method
+Review signal
+```
+
+Do not expose technical database fields as filters.
+
+---
+
+# 21. Procurement Detail
+
+This is one of the most important screens.
+
+The hierarchy should be:
+
+```text
+What is this?
+        ↓
+How much?
+        ↓
+Who is involved?
+        ↓
+What happened?
+        ↓
+What changed?
+        ↓
+What was paid?
+        ↓
+What evidence exists?
+        ↓
+Can the record be verified?
+```
+
+---
+
+# 22. Procurement Header
+
+Display:
+
+```text
+Procurement title
+OCID
+Organization
+Supplier
+Current status
+Demo data label where appropriate
+```
+
+Do not make the OCID visually dominant over the procurement title.
+
+The OCID is useful metadata.
+
+---
+
+# 23. Financial Summary
+
+Use a restrained financial summary.
+
+Example:
+
+```text
+Original contract
+GHS 5,000,000
+
+Current value
+GHS 6,200,000
+
+Paid
+GHS 3,800,000
+
+Remaining
+GHS 2,400,000
+```
+
+Each value should have context.
+
+Do not rely on giant numbers without labels.
+
+---
+
+# 24. Timeline
+
+The procurement timeline should be one of the signature components.
+
+Each event should show:
+
+```text
+date
+event name
+short description
+actor where appropriate
+document/proof indicator
+```
+
+Example:
+
+```text
+18 May 2026
+Contract amended
+
+Contract value changed from
+GHS 5,000,000 → GHS 6,200,000
+
+View amendment
+Verify document
+Blockchain proof
+```
+
+The timeline should be easy to scan.
+
+---
+
+# 25. Timeline Visual Language
+
+Use a thin vertical line with restrained event markers.
+
+Avoid:
+
+* glowing nodes;
+* giant circles;
+* animated blockchain chains.
+
+The timeline is about procurement history, not cryptocurrency.
+
+---
+
+# 26. Bids
+
+Bid information should be displayed according to its permitted visibility.
+
+Publicly visible information can include:
+
+```text
+bidder
+submission status
+recorded amount where permitted
+submission time where permitted
+```
+
+Private information must never accidentally appear in public views.
+
+---
+
+# 27. Contract Amendments
+
+Amendments should visually show change.
+
+Example:
+
+```text
+Original
+GHS 5,000,000
+
+Amended
+GHS 6,200,000
+
+Change
++GHS 1,200,000
++24%
+```
+
+Use restrained semantic emphasis.
+
+Do not make every amendment look suspicious.
+
+---
+
+# 28. Payments
+
+Payment history should be easy to understand.
+
+Prefer a table on desktop.
+
+Mobile should use stacked payment records.
+
+Display:
+
+```text
+date
+amount
+reference
+status
+```
+
+Include cumulative totals when useful.
+
+---
+
+# 29. Documents
+
+Documents should feel like a document registry.
+
+Each row/card should include:
+
+```text
+document name
+type
+date
+visibility
+verification status
+```
+
+Actions:
+
+```text
+View
+Download
+Verify
+```
+
+Do not expose private documents.
+
+---
+
+# 30. Blockchain Proof UI
+
+Blockchain proof should be understandable to ordinary users.
+
+Instead of:
+
+```text
+0x8a4f...
+```
+
+as the main message, show:
+
+```text
+Blockchain proof
+
+✓ Event anchored
+
+Network
+Base Sepolia
+
+Transaction
+0x8a4f...
+
+Block
+123456
+
+Anchored
+24 Sep 2026
+```
+
+Provide an external explorer link where appropriate.
+
+Technical information can be expandable.
+
+---
+
+# 31. Blockchain Status
+
+Use explicit status labels:
+
+```text
+Pending
+Submitted
+Confirmed
+Failed
+```
+
+Example:
+
+```text
+Blockchain proof
+Pending confirmation
+
+Your procurement record has been prepared for anchoring.
+```
+
+Never imply confirmation before confirmation.
+
+---
+
+# 32. Document Verification
+
+The verification page should be visually calm.
+
+Primary interaction:
+
+```text
+Drop document here
+
+or
+
+Choose file
+```
+
+After upload:
+
+```text
+Calculating fingerprint...
+```
+
+Then:
+
+```text
+VERIFIED
+```
+
+or:
+
+```text
+MISMATCH
+```
+
+or:
+
+```text
+NOT REGISTERED
+```
+
+---
+
+# 33. Verification Result
+
+Verified:
+
+```text
+Document verified
+
+The uploaded file matches the registered document fingerprint.
+
+SHA-256
+[hash]
+
+Registered
+[date]
+
+Blockchain status
+Confirmed
+```
+
+Mismatch:
+
+```text
+Document mismatch
+
+The uploaded file does not match the registered fingerprint.
+
+This may mean the file has changed or is not the registered document.
+
+SHA-256
+[hash]
+```
+
+Never imply intent.
+
+---
+
+# 34. Government Console
+
+The government console should resemble professional administrative software.
+
+It should prioritize:
+
+```text
+clarity
+workflow
+data
+status
+actions
+```
+
+Avoid making it look like a generic SaaS analytics template.
+
+---
+
+# 35. Console Dashboard
+
+Useful overview:
+
+```text
+Active procurements
+Open tenders
+Contracts
+Payments recorded
+Pending blockchain anchors
+Review signals
+```
+
+Numbers should be meaningful.
+
+Do not add charts simply because dashboards are expected to have charts.
+
+---
+
+# 36. Charts
+
+Charts are allowed when they communicate meaningful information.
+
+Good:
+
+```text
+Procurement value over time
+Payments against contract value
+Procurement stage distribution
+```
+
+Bad:
+
+```text
+decorative donut chart
+fake AI score
+meaningless animated graph
+```
+
+Every chart needs a clear question it answers.
+
+---
+
+# 37. Signals Interface
+
+The signals page should not look like a crime detection dashboard.
+
+Preferred language:
+
+```text
+Review signals
+Records that may warrant additional inspection
+```
+
+Each signal:
+
+```text
+Signal type
+Procurement
+Trigger
+Evidence
+Severity
+Date
+Review
+```
+
+---
+
+# 38. Signal Detail
+
+Example:
+
+```text
+SIGNAL
+
+Contract value increased by 24%
+
+Why this appeared
+
+The recorded contract value changed from
+GHS 5,000,000
+to
+GHS 6,200,000.
+
+Recorded change:
++GHS 1,200,000
+
+Reason entered:
+Additional works
+
+This is a review signal, not a finding of wrongdoing.
+```
+
+This disclaimer should be visible without being visually overwhelming.
+
+---
+
+# 39. AI Analyst UI
+
+The AI analyst should not look like ChatGPT pasted into a dashboard.
+
+Avoid:
+
+* giant chat bubbles;
+* excessive gradients;
+* sparkle icons;
+* "magic AI" visuals.
+
+Use a research-assistant style.
+
+Example:
+
+```text
+Ask about this procurement
+
+What changed after the original award?
+```
+
+Response:
+
+```text
+The contract was amended once.
+
+Original value:
+GHS 5,000,000
+
+Amended value:
+GHS 6,200,000
+
+Change:
++24%
+
+Evidence
+Contract amendment #1
+```
+
+---
+
+# 40. AI Evidence
+
+Evidence should be visually attached to claims.
+
+Use:
+
+```text
+Source
+OCID
+Event
+Document
+```
+
+where applicable.
+
+Users must be able to inspect the source.
+
+---
+
+# 41. Forms
+
+Forms should be divided into logical sections.
+
+Avoid giant forms with 30+ fields visible at once.
+
+Use:
+
+```text
+section headings
+helper text
+progress
+validation
+review
+confirmation
+```
+
+---
+
+# 42. Form Validation
+
+Validation should happen close to the field.
+
+Good:
+
+```text
+Closing date
+25 September 2026
+
+Closing date must be after opening date.
+```
+
+Bad:
+
+```text
+Form invalid.
+```
+
+at the bottom with no explanation.
+
+---
+
+# 43. Destructive Actions
+
+Destructive actions must require deliberate confirmation.
+
+Examples:
+
+```text
+Delete document
+Remove organization member
+Cancel draft
+```
+
+Confirmation should explain consequences.
+
+---
+
+# 44. Buttons
+
+Primary buttons should communicate the primary action.
+
+Examples:
+
+```text
+Publish tender
+Submit bid
+Record payment
+Verify document
+Review procurement
+```
+
+Avoid generic:
+
+```text
+Click here
+Continue
+Submit
+```
+
+when a more specific label is available.
+
+---
+
+# 45. Status Badges
+
+Use status badges sparingly.
+
+Good:
+
+```text
+Open
+Awarded
+Active
+Completed
+Pending
+Verified
+```
+
+Avoid turning every metadata value into a pill.
+
+---
+
+# 46. Tables
+
+Tables should be used for structured administrative information.
+
+Desktop:
+
+```text
+dense but readable
+```
+
+Mobile:
+
+```text
+stacked cards / horizontal scrolling only where necessary
+```
+
+Never create a table that requires users to zoom on mobile.
+
+---
+
+# 47. Empty States
+
+Empty states should feel informative.
+
+Example:
+
+```text
+No amendments recorded
+
+No contract amendments have been recorded for this procurement.
+```
+
+If there is an action:
+
+```text
+No payments recorded
+
+Record the first payment to begin the payment history.
+```
+
+---
+
+# 48. Loading States
+
+Use skeletons that resemble the eventual content.
+
+Avoid generic full-screen spinners for normal page loads.
+
+For blockchain:
+
+```text
+Submitting transaction...
+Waiting for confirmation...
+Confirmed
+```
+
+---
+
+# 49. Error States
+
+Error messages must be human.
+
+Avoid:
+
+```text
+Error 500
+RPC_ERROR
+DATABASE_EXCEPTION
+```
+
+as the primary user-facing message.
+
+Instead:
+
+```text
+We couldn't load this procurement.
+
+Try again. If the problem continues, the service may be temporarily unavailable.
+```
+
+Technical details may be available for administrators.
+
+---
+
+# 50. Slow Network
+
+For long-running operations:
+
+```text
+Still working...
+
+This is taking longer than usual. You can keep this page open while we finish the request.
+```
+
+Do not repeatedly trigger the same request without user intent.
+
+---
+
+# 51. Session Expiration
+
+If the session expires:
+
+```text
+Your session has expired.
+
+Sign in again to continue.
+```
+
+Do not lose user-entered information where it can reasonably be preserved.
+
+---
+
+# 52. Offline State
+
+If the application detects network loss:
+
+```text
+You're offline.
+
+Some information may be unavailable until your connection returns.
+```
+
+Do not claim that actions succeeded while offline unless the application explicitly supports offline transactions.
+
+---
+
+# 53. Mobile Design
+
+Mobile is not an afterthought.
+
+On mobile:
+
+* navigation becomes compact;
+* cards become full-width;
+* tables transform;
+* timelines remain readable;
+* forms become single-column;
+* action buttons remain reachable;
+* important information appears first.
+
+Avoid horizontal overflow.
+
+---
+
+# 54. Touch Targets
+
+Interactive controls should be comfortably tappable.
+
+Avoid tiny icon-only controls when a text label would improve usability.
+
+Icon-only buttons require accessible labels.
+
+---
+
+# 55. Accessibility
+
+Every interface component must consider:
+
+```text
+keyboard
+screen readers
+focus
+contrast
+motion
+labels
+errors
+```
+
+Do not remove focus outlines without providing a better visible focus state.
+
+---
+
+# 56. Icons
+
+Use one consistent icon family.
+
+Lucide is preferred if already included.
+
+Icons should support meaning.
+
+Do not decorate every heading with an icon.
+
+---
+
+# 57. Illustration
+
+Illustrations should be rare.
+
+Prefer:
+
+```text
+documents
+records
+timelines
+maps
+data
+subtle civic motifs
+```
+
+Avoid generic AI illustrations.
+
+---
+
+# 58. Maps
+
+If a map is used, it should communicate actual procurement/geographic information.
+
+Do not use a world map merely because the product is "global."
+
+Do not fabricate geographic data.
+
+---
+
+# 59. Data Visualization
+
+Every visualization must answer:
+
+> What should the user understand from this?
+
+If the answer is unclear, remove the visualization.
+
+---
+
+# 60. Content Style
+
+Copy should be:
+
+```text
+plain
+precise
+direct
+human
+```
+
+Avoid corporate jargon.
+
+Avoid:
+
+```text
+revolutionary
+game-changing
+next-generation
+AI-powered transparency revolution
+disruptive
+seamless ecosystem
+```
+
+Prefer:
+
+```text
+See what was recorded.
+Verify a document.
+Follow the procurement history.
+Inspect the evidence.
+```
+
+---
+
+# 61. Government Tone
+
+The product should sound neutral.
+
+It should not accuse public institutions, officials or suppliers.
+
+Use:
+
+```text
+recorded
+reported
+published
+verified
+matched
+not registered
+review signal
+requires review
+```
+
+Avoid:
+
+```text
+corrupt
+fraudulent
+suspicious official
+criminal contractor
+```
+
+unless directly presenting an appropriately sourced official determination.
+
+---
+
+# 62. Demo Data
+
+Demo data must have a visible indicator.
+
+Example:
+
+```text
+DEMO DATA
+```
+
+The indicator should be clear but not visually distracting.
+
+---
+
+# 63. Trust Indicators
+
+Trust should come from evidence.
+
+Use:
+
+```text
+Verified
+Blockchain anchored
+Document fingerprint
+Recorded event
+Source
+Timestamp
+```
+
+Do not use:
+
+```text
+Trusted
+100% secure
+Guaranteed
+Fraud-proof
+Corruption-proof
+```
+
+unless technically and legally justified.
+
+---
+
+# 64. Footer
+
+The footer should contain:
+
+```text
+OpenContract
+About
+Methodology
+Limitations
+Privacy
+Terms
+Documentation
+GitHub
+```
+
+The footer should reinforce transparency.
+
+Include a clear statement that blockchain anchoring does not independently verify the truthfulness of submitted information.
+
+---
+
+# 65. Responsive Breakpoints
+
+Use the framework's standard responsive system unless the existing project requires otherwise.
+
+Do not create arbitrary breakpoints for individual components.
+
+Components should adapt naturally.
+
+---
+
+# 66. Component Architecture
+
+Components should be reusable where reuse is meaningful.
+
+Examples:
+
+```text
+StatusBadge
+MoneyDisplay
+Timeline
+TimelineEvent
+DocumentCard
+DocumentTable
+VerificationResult
+BlockchainProof
+IntegritySignal
+SearchInput
+FilterPanel
+EmptyState
+ErrorState
+LoadingSkeleton
+Pagination
+```
+
+Do not create a component for every `<div>`.
+
+---
+
+# 67. Component Quality
+
+Each reusable component should have:
+
+* clear props;
+* predictable behavior;
+* accessible markup;
+* responsive behavior;
+* no unnecessary internal state;
+* no business logic that belongs in domain services.
+
+---
+
+# 68. Avoid Giant Components
+
+Do not create:
+
+```text
+ProcurementPage.tsx
+```
+
+with thousands of lines containing every business rule.
+
+Break the UI into meaningful sections.
+
+Business logic belongs outside presentation components where practical.
+
+---
+
+# 69. No Duplicate UI
+
+Before creating a new:
+
+```text
+button
+modal
+badge
+table
+form field
+toast
+timeline
+card
+```
+
+check whether an existing component already provides the behavior.
+
+Extend existing components when appropriate.
+
+---
+
+# 70. Design Consistency
+
+A user should feel that every page belongs to the same product.
+
+Maintain consistency in:
+
+```text
+spacing
+typography
+buttons
+forms
+cards
+tables
+statuses
+icons
+navigation
+motion
+```
+
+---
+
+# 71. No AI Slop Rule
+
+Before shipping any screen, ask:
+
+```text
+Would this look like a generic interface generated from a prompt?
+
+Does every visual element have a purpose?
+
+Is there unnecessary glass?
+
+Is there unnecessary gradient?
+
+Is there unnecessary animation?
+
+Are there too many cards?
+
+Are there too many pills?
+
+Is the hierarchy obvious?
+
+Does the screen feel like civic infrastructure?
+```
+
+If the answer indicates generic AI aesthetics, simplify.
+
+---
+
+# 72. Information Density
+
+OpenContract contains serious information.
+
+Do not make everything huge.
+
+Use density intentionally:
+
+```text
+headline → summary → evidence → details
+```
+
+Users should be able to scan without feeling overwhelmed.
+
+---
+
+# 73. Progressive Disclosure
+
+Advanced technical information should be available without dominating the interface.
+
+For example:
+
+```text
+Blockchain proof
+```
+
+can initially show:
+
+```text
+✓ Anchored
+```
+
+with expandable details:
+
+```text
+network
+transaction
+block
+contract
+event
+hash
+```
+
+---
+
+# 74. Public vs Administrative UI
+
+Public interface:
+
+```text
+simple
+editorial
+exploratory
+evidence-focused
+```
+
+Administrative interface:
+
+```text
+structured
+workflow-focused
+dense
+action-oriented
+```
+
+Both must share the same visual language.
+
+---
+
+# 75. Verification Experience
+
+Verification should feel like a forensic/document workflow rather than a crypto transaction.
+
+The user should understand:
+
+```text
+I uploaded this file.
+The system calculated its fingerprint.
+The fingerprint matched/did not match.
+```
+
+That is the core experience.
+
+---
+
+# 76. Blockchain Experience
+
+Blockchain should feel invisible until useful.
+
+Most citizens do not need to understand:
+
+```text
+gas
+RPC
+wallets
+ABI
+nonce
+chain ID
+```
+
+They need to understand:
+
+```text
+This record was anchored.
+Here is the proof.
+```
+
+Technical details remain available for advanced users.
+
+---
+
+# 77. Responsive Timeline
+
+On desktop:
+
+```text
+vertical timeline
+```
+
+On mobile:
+
+```text
+single-column event stream
+```
+
+Do not compress the timeline into unreadable tiny text.
+
+---
+
+# 78. Responsive Tables
+
+When a table cannot fit:
+
+Prefer transforming it into cards.
+
+For example:
+
+```text
+Payment
+
+12 Sep 2026
+GHS 500,000
+Reference: PAY-001
+Confirmed
+```
+
+rather than forcing a 7-column table into a 360px viewport.
+
+---
+
+# 79. Navigation States
+
+Navigation must support:
+
+```text
+active
+hover
+focus
+disabled
+loading
+```
+
+Active state should be obvious without excessive color.
+
+---
+
+# 80. Toasts
+
+Use toasts for lightweight feedback.
+
+Examples:
+
+```text
+Document uploaded.
+Draft saved.
+Payment recorded.
+```
+
+Do not put critical information only in a toast.
+
+---
+
+# 81. Modals
+
+Use modals for:
+
+```text
+confirmation
+focused action
+short forms
+```
+
+Do not put entire workflows inside huge modal windows.
+
+---
+
+# 82. Notifications
+
+Notifications should be meaningful.
+
+Do not create notifications for every database event.
+
+Prioritize:
+
+```text
+submission received
+blockchain confirmed
+blockchain failed
+document verification result
+important workflow change
+```
+
+---
+
+# 83. Empty Search Results
+
+Example:
+
+```text
+No procurements found
+
+Try a different search term or remove one of the filters.
+```
+
+Provide:
+
+```text
+Clear filters
+```
+
+when filters are active.
+
+---
+
+# 84. 404
+
+The 404 page should retain OpenContract's visual language.
+
+Example:
+
+```text
+Record not found
+
+The procurement or document you're looking for doesn't exist or is no longer available.
+
+Return to Explore
+```
+
+---
+
+# 85. Permission Errors
+
+Use:
+
+```text
+You don't have permission to view this record.
+```
+
+Do not reveal whether a sensitive record exists when authorization rules prohibit that disclosure.
+
+---
+
+# 86. Security UX
+
+Security should be understandable.
+
+For sensitive actions:
+
+```text
+You are about to publish this tender.
+
+Once published, this information becomes publicly visible.
+```
+
+This is preferable to silent publication.
+
+---
+
+# 87. Confirmation UX
+
+Important actions should show consequences.
+
+For publishing:
+
+```text
+Publish tender
+
+This will make the tender publicly visible.
+
+Cancel
+Publish tender
+```
+
+---
+
+# 88. Data Freshness
+
+Where appropriate, show timestamps:
+
+```text
+Updated 12 minutes ago
+```
+
+or:
+
+```text
+Recorded 24 Sep 2026
+```
+
+Do not imply real-time data if the system is not real-time.
+
+---
+
+# 89. Transparency About Limitations
+
+The product should clearly explain:
+
+```text
+Blockchain protects the integrity of the anchored record.
+
+It does not independently verify whether the original information was truthful.
+```
+
+This is a core product principle.
+
+---
+
+# 90. Final Design Test
+
+Before considering a screen finished, evaluate:
+
+### Hierarchy
+
+Can I identify the main thing immediately?
+
+### Clarity
+
+Do I understand what this page is for?
+
+### Trust
+
+Does the UI feel credible?
+
+### Evidence
+
+Can I see where important information came from?
+
+### Accessibility
+
+Can I use it without a mouse?
+
+### Mobile
+
+Does it work comfortably on a phone?
+
+### States
+
+What happens during loading?
+
+What happens if there is no data?
+
+What happens if something fails?
+
+What happens if the network disappears?
+
+### Restraint
+
+Can anything be removed without making the page worse?
+
+If yes, remove it.
+
+---
+
+# 91. Final Principle
+
+OpenContract should not impress users by looking futuristic.
+
+It should impress users by making complicated public procurement information feel understandable.
+
+The design should disappear behind the information.
+
+The product's strongest visual elements should be:
+
+```text
+records
+timelines
+evidence
+documents
+numbers
+verification
+clarity
+```
+
+not decorative effects.
+
+---
+
+# 92. AI IDE Instruction
+
+Before creating any UI:
+
+1. Read `docs/PRD.md`.
+2. Read this file.
+3. Inspect existing components.
+4. Reuse the existing design system.
+5. Build the simplest interface that satisfies the requirement.
+6. Implement all relevant states.
+7. Test responsive behavior.
+8. Test keyboard accessibility.
+9. Remove unnecessary decoration.
+10. Verify that the interface does not introduce invented information.
+
+When visual decisions are ambiguous, prefer:
+
+> simpler, calmer, clearer, more institutional.
+
+Never sacrifice usability for visual novelty.

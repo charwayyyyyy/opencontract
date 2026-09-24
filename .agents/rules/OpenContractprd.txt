@@ -1,0 +1,1977 @@
+# OpenContract
+
+## Product Requirements Document
+
+**Version:** 1.0
+**Status:** Implementation Source of Truth
+**Product:** OpenContract
+**Document:** `docs/PRD.md`
+
+---
+
+# 1. Purpose of This Document
+
+This document is the authoritative product specification for OpenContract.
+
+The AI coding agent MUST treat this document as the primary source of truth for product behavior, scope, terminology, workflows, user roles, data relationships, and acceptance criteria.
+
+The agent MUST NOT invent product functionality, workflows, government procedures, legal requirements, blockchain guarantees, datasets, integrations, or user roles that are not defined here or explicitly approved by the project owner.
+
+If something is unclear:
+
+1. Inspect the existing repository first.
+2. Check this PRD.
+3. Check `docs/design.md`.
+4. Check the existing implementation and data model.
+5. Prefer the simplest implementation consistent with the documented requirements.
+6. Do not invent facts to fill a gap.
+7. If implementation ambiguity materially affects architecture or data integrity, stop and document the ambiguity rather than silently creating an assumption.
+
+---
+
+# 2. Product Definition
+
+OpenContract is a public procurement transparency and verification platform.
+
+Its purpose is to make procurement information easier to understand, trace, verify and audit by creating a structured public record of procurement events and cryptographic proofs.
+
+OpenContract is an **accountability and verification layer**.
+
+It is NOT:
+
+* a replacement for an official government procurement platform;
+* a replacement for GHANEPS;
+* a court;
+* an anti-corruption enforcement authority;
+* a financial institution;
+* a procurement regulator;
+* an automated legal decision-maker;
+* proof that a procurement process was honest;
+* proof that information submitted by an authorized user is factually true;
+* a system that stores sensitive bidding information publicly on-chain.
+
+The platform records and verifies information that has been entered into the system.
+
+Blockchain provides tamper-evident anchoring of selected records and hashes. It does not magically establish the truth of the underlying information.
+
+---
+
+# 3. Core Product Principle
+
+## Every public procurement should have a traceable history.
+
+A procurement should be understandable as a sequence:
+
+```text
+Planning
+   ↓
+Tender
+   ↓
+Bid Submission
+   ↓
+Bid Closure
+   ↓
+Evaluation
+   ↓
+Award
+   ↓
+Contract
+   ↓
+Amendment
+   ↓
+Payment
+   ↓
+Implementation
+   ↓
+Inspection
+   ↓
+Completion
+```
+
+The platform should allow a user to move through this history without needing to understand blockchain technology.
+
+Blockchain should support the experience rather than dominate it.
+
+---
+
+# 4. Primary Users
+
+## 4.1 Citizen
+
+A citizen can:
+
+* browse public procurements;
+* search for procurement records;
+* view contract values;
+* view suppliers;
+* understand procurement timelines;
+* inspect awards;
+* inspect amendments;
+* inspect payments;
+* inspect implementation milestones;
+* inspect publicly available documents;
+* verify document authenticity;
+* inspect blockchain proof;
+* see integrity/review signals;
+* ask the AI analyst questions about public procurement data.
+
+Citizens do not need an account to access public information.
+
+---
+
+## 4.2 Contractor
+
+A contractor can:
+
+* create/manage an organization profile;
+* view available tenders;
+* inspect tender requirements;
+* submit a bid;
+* upload permitted documents;
+* receive a cryptographically anchored submission receipt;
+* see submission status;
+* view procurement outcomes where permitted;
+* manage their submitted information.
+
+Sensitive bid information MUST NOT become public before the appropriate procurement stage.
+
+---
+
+## 4.3 Procurement Officer
+
+A procurement officer can:
+
+* create procurement records;
+* create tenders;
+* publish tender information;
+* manage procurement stages;
+* receive bid submissions;
+* close submissions;
+* record evaluation information;
+* publish awards;
+* create contracts;
+* record amendments;
+* record payments;
+* record milestones;
+* upload public documents;
+* anchor relevant records;
+* view audit history.
+
+---
+
+## 4.4 Auditor
+
+An auditor can:
+
+* inspect procurement histories;
+* inspect blockchain anchors;
+* inspect document hashes;
+* review integrity signals;
+* inspect audit logs;
+* compare procurement events;
+* investigate unusual patterns;
+* export relevant records.
+
+Auditors do not automatically determine that corruption, fraud or illegality occurred.
+
+The system should say:
+
+> Review signal detected.
+
+It should NOT say:
+
+> Corruption detected.
+
+unless a future explicitly approved feature provides an appropriate legal/administrative basis for such a statement.
+
+---
+
+## 4.5 Administrator
+
+Administrators can:
+
+* manage users;
+* manage organizations;
+* manage system configuration;
+* review system health;
+* manage authorized publishing roles;
+* investigate technical issues;
+* manage AI configuration;
+* view security/audit information.
+
+Administrative access MUST be server-side protected.
+
+---
+
+# 5. Roles
+
+The application MUST support these roles:
+
+```text
+PUBLIC
+CONTRACTOR
+PROCUREMENT_OFFICER
+EVALUATOR
+AUDITOR
+ADMIN
+```
+
+Role permissions MUST be explicit.
+
+Do not implement permissions using frontend visibility alone.
+
+The backend MUST enforce authorization.
+
+---
+
+# 6. Product Architecture
+
+The system should follow this conceptual architecture:
+
+```text
+                    ┌────────────────────┐
+                    │   Public Web App   │
+                    └─────────┬──────────┘
+                              │
+                    ┌─────────▼──────────┐
+                    │ Application / API  │
+                    └─────────┬──────────┘
+                              │
+          ┌───────────────────┼───────────────────┐
+          │                   │                   │
+ ┌────────▼────────┐ ┌────────▼────────┐ ┌────────▼────────┐
+ │   PostgreSQL    │ │ Document Store  │ │ Blockchain      │
+ │   Source Data   │ │ Files + Hashes  │ │ Proof / Anchors │
+ └─────────────────┘ └─────────────────┘ └─────────────────┘
+                              │
+                    ┌─────────▼──────────┐
+                    │ Intelligence Layer│
+                    │ Signals + AI       │
+                    └────────────────────┘
+```
+
+PostgreSQL is the application's primary structured data store.
+
+Blockchain is an integrity/proof layer.
+
+Object storage contains documents.
+
+The AI layer consumes structured application data through controlled server-side functions.
+
+---
+
+# 7. Source of Truth Rules
+
+The following rules are mandatory.
+
+## 7.1 Database
+
+The PostgreSQL database is the application's canonical structured data source.
+
+## 7.2 Blockchain
+
+Blockchain stores cryptographic proofs and event anchors.
+
+The blockchain is NOT the primary relational database.
+
+## 7.3 Documents
+
+Documents are stored off-chain.
+
+Their cryptographic hashes can be anchored on-chain.
+
+## 7.4 AI
+
+AI must never become the source of truth.
+
+AI responses must be generated from application data and clearly identify the records supporting the answer.
+
+## 7.5 UI
+
+The frontend must never invent data.
+
+All displayed procurement information must come from:
+
+* the database;
+* approved deterministic calculations;
+* blockchain verification;
+* or explicitly marked demo data.
+
+---
+
+# 8. Demo Data Policy
+
+The hackathon demonstration uses fictional procurement data.
+
+All fictional data MUST be clearly marked:
+
+> DEMO DATA
+
+Do not present fictional procurement records as real government contracts.
+
+Do not invent real government agencies, officials, contractors, contract awards or expenditure figures and present them as factual.
+
+Demo organizations should use clearly fictional names.
+
+Example:
+
+```text
+Greater Accra Civic Infrastructure Authority
+```
+
+may only be used as fictional demo data if it is clearly marked as such.
+
+Prefer obviously fictional organizations where appropriate.
+
+---
+
+# 9. Procurement Entity
+
+A procurement is identified publicly using an OCID-compatible identifier.
+
+Example:
+
+```text
+ocds-demo-2026-000001
+```
+
+The internal database ID and public OCID must be separate.
+
+Internal IDs should use UUIDs.
+
+The OCID is the public identifier.
+
+---
+
+# 10. Procurement Lifecycle
+
+A procurement can progress through the following stages:
+
+```text
+PLANNING
+TENDER
+BIDDING
+CLOSED
+EVALUATION
+AWARDED
+CONTRACTED
+AMENDED
+IMPLEMENTATION
+COMPLETED
+```
+
+The application MUST preserve the chronological event history.
+
+Historical events should not simply disappear when the current status changes.
+
+Example:
+
+```text
+Tender Published
+        ↓
+Bids Received
+        ↓
+Bids Closed
+        ↓
+Evaluation Published
+        ↓
+Award Published
+        ↓
+Contract Created
+        ↓
+Contract Amended
+        ↓
+Payment Recorded
+```
+
+---
+
+# 11. Core Entities
+
+The implementation must support, at minimum:
+
+```text
+User
+Organization
+OrganizationMember
+
+Procurement
+Tender
+TenderLot
+Bid
+BidDocument
+Evaluation
+Award
+
+Contract
+ContractAmendment
+
+Payment
+Milestone
+Inspection
+
+Document
+
+BlockchainAnchor
+AuditLog
+IntegritySignal
+
+AIQuery
+```
+
+Do not create unnecessary entities simply because they appear theoretically useful.
+
+Every database entity should serve an actual product workflow.
+
+---
+
+# 12. Procurement
+
+A procurement must contain enough information to identify and describe the procurement.
+
+Minimum conceptual fields:
+
+```text
+id
+ocid
+title
+description
+procuringOrganization
+procurementMethod
+status
+currency
+estimatedValue
+createdAt
+updatedAt
+publishedAt
+```
+
+Money values must use appropriate decimal/numeric representations.
+
+Never use JavaScript floating point arithmetic for financial calculations where precision matters.
+
+---
+
+# 13. Tender
+
+A tender belongs to a procurement.
+
+It may contain:
+
+```text
+title
+description
+openingDate
+closingDate
+procurementMethod
+eligibilityRequirements
+documents
+status
+```
+
+Tender dates must be validated.
+
+Closing dates cannot silently precede opening dates.
+
+---
+
+# 14. Bid
+
+A bid belongs to a tender and bidder organization.
+
+A bid may include:
+
+```text
+id
+tenderId
+bidderOrganizationId
+submittedAt
+status
+amount
+submissionReference
+```
+
+Bid data requires special privacy handling.
+
+The system MUST distinguish:
+
+```text
+private bid data
+public bid information
+```
+
+The implementation MUST NOT expose private bid contents through public APIs.
+
+---
+
+# 15. Bid Submission Receipt
+
+When a bid is successfully submitted, the platform should create a submission receipt.
+
+The receipt should contain:
+
+```text
+submission reference
+procurement OCID
+tender identifier
+bidder
+timestamp
+document hashes where applicable
+blockchain anchor status
+```
+
+The receipt must not reveal confidential bid information.
+
+---
+
+# 16. Evaluation
+
+Evaluation records describe the procurement evaluation outcome.
+
+The implementation should support:
+
+```text
+evaluation criteria
+evaluation date
+evaluators
+summary
+result
+supporting documents
+```
+
+Do not invent evaluation criteria that were not entered by an authorized user.
+
+---
+
+# 17. Award
+
+An award connects a procurement to a selected supplier.
+
+It should support:
+
+```text
+supplier
+award amount
+currency
+award date
+award status
+reason/summary
+supporting documents
+```
+
+The UI should make it clear that the award is a recorded procurement event, not a blockchain-generated decision.
+
+---
+
+# 18. Contract
+
+A contract must support:
+
+```text
+contract reference
+procurement OCID
+supplier
+original amount
+currency
+start date
+end date
+status
+documents
+```
+
+The contract page is one of the most important public views.
+
+It should present the procurement as a readable story rather than as a database dump.
+
+---
+
+# 19. Amendments
+
+Contract amendments must be individually recorded.
+
+Each amendment should include:
+
+```text
+amendment number
+reason
+previous value
+new value
+change amount
+change percentage
+date
+supporting document
+```
+
+The system must preserve the original contract value.
+
+Never overwrite historical financial information.
+
+---
+
+# 20. Payments
+
+Payments should be recorded as individual events.
+
+Minimum conceptual fields:
+
+```text
+amount
+currency
+payment date
+reference
+description
+status
+supporting document
+```
+
+Payments must be associated with the correct contract.
+
+The system should calculate:
+
+```text
+total paid
+remaining value
+percentage paid
+```
+
+using precise arithmetic.
+
+---
+
+# 21. Implementation
+
+Implementation tracking should support:
+
+```text
+milestones
+completion percentage
+inspection records
+completion date
+```
+
+The platform should not claim physical completion merely because a database record says a milestone was entered.
+
+The system reports recorded information.
+
+---
+
+# 22. Documents
+
+Documents are first-class entities.
+
+Supported documents may include:
+
+```text
+Tender documents
+Bid documents
+Evaluation documents
+Award documents
+Contract documents
+Amendment documents
+Payment documents
+Inspection documents
+Completion documents
+```
+
+Documents should have:
+
+```text
+id
+filename
+mimeType
+size
+storageKey
+sha256
+visibility
+uploadedBy
+createdAt
+```
+
+---
+
+# 23. Document Verification
+
+Document verification is a core product feature.
+
+The process:
+
+```text
+User uploads document
+        ↓
+Read exact bytes
+        ↓
+Calculate SHA-256
+        ↓
+Search registered document hashes
+        ↓
+Compare
+        ↓
+Display verification result
+```
+
+Possible outcomes:
+
+### VERIFIED
+
+The uploaded file's SHA-256 hash matches a registered document hash.
+
+### MISMATCH
+
+The uploaded file does not match the registered hash.
+
+### NOT REGISTERED
+
+No matching document hash exists.
+
+### PENDING
+
+A registered document exists but blockchain anchoring is still processing.
+
+### ERROR
+
+The verification process could not complete.
+
+The UI must explain these states clearly.
+
+---
+
+# 24. Important Hashing Rule
+
+Hash the exact uploaded bytes.
+
+Do NOT hash:
+
+* the filename;
+* a database ID;
+* extracted text;
+* a URL;
+* a generated JSON representation;
+
+unless that is explicitly a separate documented hashing operation.
+
+For document verification, SHA-256 should be calculated over the exact file bytes.
+
+---
+
+# 25. Blockchain
+
+OpenContract uses an EVM-compatible blockchain for cryptographic anchoring.
+
+Preferred hackathon implementation:
+
+```text
+Solidity
+Foundry
+OpenZeppelin
+viem
+EVM testnet
+```
+
+The exact network must be configured through environment variables.
+
+Do not hard-code network assumptions into business logic.
+
+---
+
+# 26. Blockchain Principles
+
+The blockchain layer must:
+
+* anchor important procurement events;
+* anchor document hashes;
+* provide transaction references;
+* allow public verification;
+* preserve cryptographic integrity.
+
+The blockchain layer must NOT:
+
+* store confidential bids;
+* store personal information;
+* store complete documents;
+* store sensitive procurement information;
+* become the primary application database.
+
+---
+
+# 27. Blockchain Event Types
+
+The system should support:
+
+```text
+PROCUREMENT_CREATED
+TENDER_PUBLISHED
+BID_COMMITTED
+SUBMISSIONS_CLOSED
+BIDS_OPENED
+EVALUATION_PUBLISHED
+AWARD_PUBLISHED
+CONTRACT_CREATED
+CONTRACT_AMENDED
+PAYMENT_RECORDED
+MILESTONE_RECORDED
+INSPECTION_RECORDED
+CONTRACT_COMPLETED
+```
+
+Only implement events that correspond to actual application actions.
+
+Do not create blockchain transactions merely to make the demo look more Web3-heavy.
+
+---
+
+# 28. Blockchain Anchor
+
+A blockchain anchor should conceptually contain:
+
+```text
+procurement identifier hash
+event identifier
+event type
+data hash
+document hash if applicable
+publisher
+timestamp
+transaction hash
+block number
+network
+status
+```
+
+The application should retain the blockchain transaction reference.
+
+---
+
+# 29. Blockchain Status
+
+The UI must distinguish:
+
+```text
+PENDING
+SUBMITTED
+CONFIRMED
+FAILED
+```
+
+Never display "Verified on blockchain" before the transaction has actually reached the required confirmation state.
+
+Never fake transaction hashes.
+
+Never generate random blockchain transaction IDs and present them as real transactions.
+
+---
+
+# 30. Blockchain Processing
+
+Blockchain transactions should preferably be asynchronous.
+
+Recommended flow:
+
+```text
+Database transaction
+       ↓
+Outbox record
+       ↓
+Blockchain worker
+       ↓
+Transaction submitted
+       ↓
+Transaction confirmed
+       ↓
+Database anchor updated
+```
+
+A blockchain RPC failure must not corrupt the procurement database transaction.
+
+Retries must be idempotent.
+
+---
+
+# 31. Integrity Signals
+
+The platform may generate deterministic review signals.
+
+Examples:
+
+### Single bidder
+
+A tender received only one recorded bid.
+
+### Significant amendment
+
+Contract value increased beyond a configured threshold.
+
+### Delayed implementation
+
+Recorded milestone dates indicate significant delay.
+
+### Missing update
+
+An expected procurement stage has no corresponding public record.
+
+### Supplier concentration
+
+A supplier appears across an unusually high number of procurement records within the available dataset.
+
+These are signals for review.
+
+They are NOT findings of wrongdoing.
+
+---
+
+# 32. Signal Language
+
+Allowed:
+
+> Review signal
+
+> Requires additional review
+
+> Contract value increased by 24%.
+
+> Only one bid was recorded.
+
+Not allowed:
+
+> Corruption detected.
+
+> Fraud detected.
+
+> This official is corrupt.
+
+> This contractor committed fraud.
+
+> This procurement is illegal.
+
+unless an explicitly authorized future workflow establishes such a determination from a competent authority.
+
+---
+
+# 33. Signal Severity
+
+Use:
+
+```text
+INFO
+LOW
+MEDIUM
+HIGH
+```
+
+Severity is a product classification for review priority.
+
+It is not a probability of corruption.
+
+Do not represent severity as certainty.
+
+---
+
+# 34. Integrity Signal Explainability
+
+Every signal must explain:
+
+1. What triggered it.
+2. Which procurement record was inspected.
+3. Which values were compared.
+4. The calculation used.
+5. Why the signal was created.
+6. What the user should review.
+
+Example:
+
+```text
+Review signal
+
+Contract value increased by 24%.
+
+Original value:
+GHS 1,000,000
+
+Amended value:
+GHS 1,240,000
+
+Change:
++GHS 240,000 (+24%)
+
+Reason recorded:
+Additional works
+
+This signal does not establish wrongdoing.
+```
+
+---
+
+# 35. AI Procurement Analyst
+
+The AI analyst is an explanatory interface over verified application data.
+
+It can answer questions such as:
+
+```text
+Which contracts increased in value?
+
+Which procurements had one recorded bidder?
+
+How much has been paid on this contract?
+
+What amendments were recorded?
+
+Show the timeline of this procurement.
+
+Which suppliers appear most frequently in this dataset?
+```
+
+AI responses must be based on available structured records.
+
+---
+
+# 36. AI Safety Rules
+
+The AI MUST NOT:
+
+* invent procurement records;
+* invent contract values;
+* invent suppliers;
+* invent government officials;
+* invent payment records;
+* invent blockchain transactions;
+* invent citations;
+* invent legal conclusions;
+* claim access to information it cannot access;
+* expose confidential information to unauthorized users.
+
+If data is unavailable, say:
+
+> I don't have enough recorded data to answer that.
+
+Do not guess.
+
+---
+
+# 37. AI Evidence
+
+AI answers should provide evidence.
+
+Where possible, include:
+
+```text
+Procurement OCID
+Contract reference
+Relevant event
+Relevant value
+Source record
+```
+
+The user should be able to navigate from the answer to the underlying procurement record.
+
+---
+
+# 38. OCDS Compatibility
+
+OpenContract should model its procurement lifecycle in a way that can map to the Open Contracting Data Standard.
+
+Conceptually:
+
+```text
+Procurement
+    ↓
+Planning
+    ↓
+Tender
+    ↓
+Award
+    ↓
+Contract
+    ↓
+Implementation
+```
+
+The application should support generation of OCDS-compatible release/record structures.
+
+Do not invent OCDS fields when a standard field or extension can be used.
+
+Where OpenContract-specific data does not map directly, isolate the custom extension.
+
+---
+
+# 39. Public Explorer
+
+The public explorer is the main discovery interface.
+
+Users should be able to:
+
+* search by procurement;
+* search by supplier;
+* search by organization;
+* filter by status;
+* filter by procurement method;
+* filter by value range;
+* filter by date;
+* sort results;
+* open a procurement.
+
+Search should be understandable to non-technical users.
+
+---
+
+# 40. Contract Detail Page
+
+The contract/procurement detail page should include:
+
+### Header
+
+* title;
+* organization;
+* supplier;
+* status;
+* demo-data indicator where applicable.
+
+### Financial summary
+
+* original value;
+* amended value;
+* total paid;
+* remaining value.
+
+### Timeline
+
+Chronological procurement events.
+
+### Bids
+
+Publicly available bid information appropriate to the current stage.
+
+### Award
+
+Supplier and award information.
+
+### Contract
+
+Contract information.
+
+### Amendments
+
+All amendments.
+
+### Payments
+
+Recorded payments.
+
+### Documents
+
+Available public documents.
+
+### Integrity
+
+Review signals.
+
+### Blockchain proof
+
+Anchored events and document hashes.
+
+### Audit trail
+
+Relevant public event history.
+
+---
+
+# 41. Public Verification Page
+
+Route:
+
+```text
+/verify
+```
+
+Purpose:
+
+Allow users to verify whether a document corresponds to a registered document hash.
+
+Primary interaction:
+
+```text
+Upload document
+        ↓
+Hash file
+        ↓
+Verify
+        ↓
+Result
+```
+
+The page must explain the limitations of cryptographic verification.
+
+A matching hash means:
+
+> The uploaded file matches the registered bytes.
+
+It does NOT mean:
+
+> The contents of the document are truthful.
+
+---
+
+# 42. Government Console
+
+The government console should include:
+
+```text
+Overview
+Procurements
+Tenders
+Bids
+Awards
+Contracts
+Payments
+Documents
+Audit Log
+```
+
+Navigation should be role-aware.
+
+Users should not see irrelevant modules.
+
+---
+
+# 43. Procurement Creation
+
+Creating a procurement should use a structured workflow rather than one enormous form.
+
+Suggested steps:
+
+```text
+1. Basic information
+2. Procuring organization
+3. Tender details
+4. Financial information
+5. Documents
+6. Review
+7. Publish
+```
+
+Before publication, display a review summary.
+
+Publishing is a deliberate action.
+
+Do not publish automatically after saving a draft.
+
+---
+
+# 44. Contractor Portal
+
+Contractors should see:
+
+```text
+Available tenders
+My submissions
+Submission details
+Organization profile
+Documents
+```
+
+A submission should provide clear confirmation.
+
+After successful submission:
+
+```text
+Submission received
+Reference: ...
+Timestamp: ...
+```
+
+If blockchain anchoring is used:
+
+```text
+Blockchain proof
+Pending / Confirmed
+```
+
+---
+
+# 45. Auditor Console
+
+Auditors should see:
+
+```text
+Overview
+Signals
+Procurements
+Investigations
+Audit Trail
+Blockchain Verification
+```
+
+The auditor experience should emphasize evidence rather than dramatic alerts.
+
+Avoid red-heavy "fraud dashboard" aesthetics.
+
+---
+
+# 46. Audit Logging
+
+Important actions must generate audit records.
+
+Examples:
+
+```text
+USER_CREATED
+PROCUREMENT_CREATED
+PROCUREMENT_UPDATED
+TENDER_PUBLISHED
+BID_SUBMITTED
+BID_CLOSED
+EVALUATION_CREATED
+AWARD_PUBLISHED
+CONTRACT_CREATED
+CONTRACT_AMENDED
+PAYMENT_RECORDED
+DOCUMENT_UPLOADED
+DOCUMENT_VERIFIED
+BLOCKCHAIN_ANCHORED
+ROLE_CHANGED
+```
+
+Audit logs should be append-oriented.
+
+Users should not be able to casually edit historical audit records.
+
+---
+
+# 47. Authentication
+
+Use one authentication solution.
+
+Preferred:
+
+```text
+Clerk
+```
+
+or another explicitly selected authentication system if the repository already contains one.
+
+Do not install multiple authentication systems unnecessarily.
+
+Authentication and authorization are separate concepts.
+
+---
+
+# 48. API Rules
+
+APIs must:
+
+* validate input;
+* validate authorization;
+* return predictable response structures;
+* handle errors;
+* avoid leaking internal errors;
+* avoid exposing confidential data;
+* use transactions for related writes;
+* support idempotency where necessary.
+
+Never allow frontend clients to directly manipulate database records.
+
+---
+
+# 49. API Error Format
+
+Use a consistent error structure.
+
+Conceptually:
+
+```json
+{
+  "error": {
+    "code": "DOCUMENT_NOT_FOUND",
+    "message": "The requested document could not be found.",
+    "requestId": "..."
+  }
+}
+```
+
+Do not expose stack traces to users.
+
+---
+
+# 50. Loading States
+
+Every asynchronous screen must have an intentional loading state.
+
+Use:
+
+* skeletons for content-heavy pages;
+* progress indicators for actions;
+* upload progress for files;
+* transaction status for blockchain operations.
+
+Never leave users staring at an empty screen.
+
+---
+
+# 51. Empty States
+
+Every collection needs an empty state.
+
+Examples:
+
+```text
+No procurements found.
+
+No bids have been submitted yet.
+
+No amendments have been recorded.
+
+No review signals were generated.
+
+No public documents are available.
+```
+
+Empty states should explain what the user can do next when appropriate.
+
+---
+
+# 52. Error States
+
+Errors must be understandable.
+
+Examples:
+
+```text
+Something went wrong.
+
+We couldn't load this procurement.
+
+Your document could not be verified.
+
+The blockchain transaction failed.
+
+Your session has expired.
+```
+
+Always provide a recovery action when possible.
+
+Examples:
+
+```text
+Try again
+Return to procurement
+Upload another document
+Sign in again
+```
+
+---
+
+# 53. Offline / Network Failure
+
+The application should gracefully handle:
+
+```text
+offline
+slow network
+request timeout
+temporary server error
+blockchain RPC failure
+document upload failure
+```
+
+Do not silently fail.
+
+---
+
+# 54. Security
+
+Minimum requirements:
+
+* server-side authorization;
+* input validation;
+* secure authentication;
+* secure cookies where applicable;
+* rate limiting;
+* secure headers;
+* file type validation;
+* file size validation;
+* MIME validation;
+* protection against unauthorized document access;
+* no secrets in client code;
+* no private keys committed to Git;
+* no sensitive information on-chain;
+* safe error handling;
+* audit logging.
+
+---
+
+# 55. File Upload Security
+
+Uploads must validate:
+
+```text
+file size
+MIME type
+extension
+content where practical
+authorization
+```
+
+Do not trust the client-provided filename or MIME type alone.
+
+Private documents must not be publicly accessible through predictable storage URLs.
+
+---
+
+# 56. Financial Calculations
+
+Money must be represented precisely.
+
+The application must support:
+
+```text
+currency
+amount
+original amount
+amended amount
+paid amount
+remaining amount
+percentage changes
+```
+
+Never use floating point arithmetic for important monetary calculations.
+
+---
+
+# 57. Responsive Requirements
+
+The application is mobile-first.
+
+Every screen must work on:
+
+```text
+mobile
+tablet
+desktop
+large desktop
+```
+
+Do not merely shrink desktop layouts.
+
+Navigation, tables, forms and timelines must be redesigned appropriately for smaller screens.
+
+---
+
+# 58. Accessibility
+
+Target WCAG 2.2 AA principles.
+
+Requirements include:
+
+* keyboard navigation;
+* visible focus states;
+* semantic HTML;
+* accessible forms;
+* labels;
+* error descriptions;
+* sufficient contrast;
+* reduced-motion support;
+* screen-reader-friendly status messages;
+* meaningful button labels.
+
+---
+
+# 59. Performance
+
+Avoid:
+
+* unnecessary client components;
+* huge JavaScript bundles;
+* unnecessary animation;
+* repeated database queries;
+* unoptimized images;
+* loading entire datasets when pagination is appropriate.
+
+Use:
+
+* server rendering where appropriate;
+* pagination;
+* caching where safe;
+* database indexes;
+* lazy loading;
+* optimized assets.
+
+---
+
+# 60. Design Direction
+
+OpenContract is government-related infrastructure.
+
+The interface should feel:
+
+```text
+calm
+credible
+transparent
+modern
+institutional
+human
+precise
+accessible
+```
+
+It should NOT feel like:
+
+```text
+crypto casino
+Web3 trading terminal
+AI startup landing page
+cybersecurity dashboard
+gaming interface
+generic SaaS template
+```
+
+The complete visual system is defined in:
+
+```text
+docs/design.md
+```
+
+The AI agent MUST read and follow it.
+
+---
+
+# 61. Explicit Anti-Hallucination Rules
+
+The AI coding agent MUST obey these rules.
+
+### Rule 1
+
+Never invent a requirement.
+
+### Rule 2
+
+Never invent a database relationship because it "seems useful."
+
+### Rule 3
+
+Never invent government processes.
+
+### Rule 4
+
+Never invent legal requirements.
+
+### Rule 5
+
+Never invent real procurement records.
+
+### Rule 6
+
+Never create fake blockchain transactions.
+
+### Rule 7
+
+Never create fake verification results.
+
+### Rule 8
+
+Never create fake AI evidence.
+
+### Rule 9
+
+Never label demo data as real data.
+
+### Rule 10
+
+Never silently change existing working business logic.
+
+### Rule 11
+
+Never replace working infrastructure merely because another stack is preferred.
+
+### Rule 12
+
+Never introduce a dependency without a reason.
+
+### Rule 13
+
+Never create duplicate components when an existing component already solves the problem.
+
+### Rule 14
+
+Never hide errors simply to make the application appear functional.
+
+### Rule 15
+
+Never use hardcoded values to simulate dynamic functionality when the feature is expected to work for real.
+
+---
+
+# 62. Agent Operating Procedure
+
+Before modifying code:
+
+```text
+1. Inspect repository.
+2. Inspect package.json.
+3. Inspect environment configuration.
+4. Inspect existing routes.
+5. Inspect existing components.
+6. Inspect database schema.
+7. Inspect authentication.
+8. Inspect blockchain code.
+9. Inspect storage configuration.
+10. Read docs/PRD.md.
+11. Read docs/design.md.
+12. Identify what already works.
+13. Identify missing functionality.
+14. Plan the smallest safe implementation.
+15. Implement.
+16. Run validation.
+17. Fix errors.
+18. Re-test affected functionality.
+```
+
+The agent should never begin by deleting the project and rebuilding it from scratch unless explicitly instructed.
+
+---
+
+# 63. Change Management
+
+Before introducing a major architectural change, determine:
+
+```text
+Does the current implementation already solve this?
+
+Will this break existing functionality?
+
+Does the PRD require the change?
+
+Is there a simpler solution?
+
+Does the change require a migration?
+
+Does the change affect security?
+
+Does the change affect blockchain state?
+```
+
+---
+
+# 64. Testing Requirements
+
+The project should include:
+
+### Unit tests
+
+For:
+
+* financial calculations;
+* hash calculation;
+* integrity rules;
+* permission checks;
+* validation.
+
+### Integration tests
+
+For:
+
+* procurement creation;
+* bid submission;
+* contract amendment;
+* payment recording;
+* document verification;
+* blockchain anchor processing.
+
+### End-to-end tests
+
+At minimum:
+
+```text
+Public explorer → procurement → contract → verification
+
+Officer → create procurement → publish tender
+
+Contractor → submit bid → receive receipt
+
+Officer → award → create contract → amendment → payment
+
+Auditor → review signal → inspect evidence
+```
+
+---
+
+# 65. Core Vertical Slice
+
+The project is considered functionally coherent when this workflow works end-to-end:
+
+```text
+CREATE PROCUREMENT
+       ↓
+PUBLISH TENDER
+       ↓
+SUBMIT BIDS
+       ↓
+CLOSE SUBMISSIONS
+       ↓
+PUBLISH EVALUATION
+       ↓
+PUBLISH AWARD
+       ↓
+CREATE CONTRACT
+       ↓
+AMEND CONTRACT
+       ↓
+RECORD PAYMENT
+       ↓
+PUBLIC HISTORY
+       ↓
+UPLOAD DOCUMENT
+       ↓
+HASH DOCUMENT
+       ↓
+ANCHOR HASH
+       ↓
+VERIFY DOCUMENT
+       ↓
+GENERATE REVIEW SIGNAL
+       ↓
+AI ANALYSIS
+```
+
+Do not prioritize secondary features over completing this vertical slice.
+
+---
+
+# 66. Hackathon Demo Scenario
+
+Use fictional demo data.
+
+Example procurement:
+
+```text
+Construction of a 3-Classroom Block
+
+Original contract value:
+GHS 5,000,000
+
+Fictional bidders:
+3
+
+Award:
+1 fictional supplier
+
+Amendment:
+Increase above original contract value
+
+Payments:
+Multiple recorded payments
+
+Implementation:
+Recorded milestone
+
+Inspection:
+Recorded inspection
+```
+
+The exact numbers can be adjusted during implementation.
+
+The demo must clearly indicate that this is fictional demonstration data.
+
+---
+
+# 67. Demo Story
+
+The intended demonstration should show:
+
+```text
+1. Public homepage
+2. Explore procurements
+3. Open procurement
+4. Inspect lifecycle
+5. Inspect bids
+6. Inspect award
+7. Inspect contract
+8. Inspect amendment
+9. Inspect payment
+10. See review signal
+11. Open document
+12. Verify original document
+13. Modify document
+14. Verify modified document
+15. Show mismatch
+16. Inspect blockchain proof
+17. Ask AI analyst a factual question
+18. Open supporting evidence
+```
+
+This demonstrates the relationship between:
+
+```text
+transparency
+structured data
+cryptographic verification
+blockchain
+analytics
+AI
+```
+
+---
+
+# 68. Definition of Done
+
+A feature is NOT complete merely because its UI exists.
+
+A feature is complete only when:
+
+* UI exists;
+* backend exists;
+* validation exists;
+* authorization exists;
+* database interaction works;
+* error handling works;
+* loading state exists;
+* empty state exists where applicable;
+* success state exists;
+* mobile behavior works;
+* accessibility has been considered;
+* tests exist where appropriate;
+* no fake functionality is being represented as real.
+
+---
+
+# 69. Final Implementation Rule
+
+When forced to choose between:
+
+```text
+many impressive-looking fake features
+```
+
+and
+
+```text
+fewer complete, trustworthy features
+```
+
+choose the second.
+
+OpenContract should feel like a real civic technology product, not an AI-generated prototype.
+
+The most important qualities are:
+
+```text
+clarity
+trust
+traceability
+correctness
+usability
+technical integrity
+```
+
+---
+
+# 70. Final Agent Instruction
+
+Before every significant implementation decision, ask:
+
+> "Is this explicitly supported by the PRD, the design system, the existing codebase, or a necessary technical implementation detail?"
+
+If yes, proceed.
+
+If no, do not invent.
+
+Build the smallest implementation that preserves the product's integrity.

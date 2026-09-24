@@ -1,0 +1,399 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   OpenContract Global CSS
+   Civic / Editorial Design System
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* Core palette — warm off-white base */
+    --background: 47 18% 97%;       /* #F7F7F4 warm off-white */
+    --surface: 0 0% 100%;           /* #FFFFFF pure white */
+    --foreground: 125 8% 13%;       /* #202320 deep graphite */
+
+    /* Text hierarchy */
+    --text-primary: 125 8% 13%;     /* #202320 */
+    --text-secondary: 130 4% 42%;   /* #68706A */
+    --text-muted: 130 3% 60%;       /* #979E98 */
+
+    /* Borders */
+    --border: 120 7% 90%;           /* #E4E6E1 */
+    --input: 120 7% 90%;
+
+    /* Primary action — authoritative dark green */
+    --primary: 140 37% 27%;         /* #2C5F3C */
+    --primary-foreground: 0 0% 100%;
+    --primary-subtle: 140 25% 94%;  /* #EBF3EE subtle green tint */
+
+    /* Semantic status colors */
+    --status-success: 149 35% 36%;  /* #3D7A5E muted green */
+    --status-success-bg: 149 25% 94%;
+    --status-warning: 35 59% 40%;   /* #A0722A muted amber */
+    --status-warning-bg: 40 55% 94%;
+    --status-error: 0 45% 47%;      /* #B54040 muted red */
+    --status-error-bg: 0 45% 95%;
+    --status-info: 212 47% 44%;     /* #3A6EA8 muted blue */
+    --status-info-bg: 212 40% 95%;
+
+    /* shadcn/ui compat */
+    --card: 0 0% 100%;
+    --card-foreground: 125 8% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 125 8% 13%;
+    --secondary: 120 7% 95%;
+    --secondary-foreground: 125 8% 13%;
+    --muted: 120 7% 95%;
+    --muted-foreground: 130 4% 42%;
+    --accent: 140 25% 94%;
+    --accent-foreground: 140 37% 27%;
+    --destructive: 0 45% 47%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 140 37% 27%;
+    --radius: 0.375rem;
+  }
+
+  /* Base element styles */
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Focus — accessible but not aggressive */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Heading hierarchy */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.25;
+    color: hsl(var(--text-primary));
+    letter-spacing: -0.01em;
+  }
+
+  /* Monospace — for hashes, code */
+  code, pre, .font-mono {
+    font-family: var(--font-geist-mono), ui-monospace, "Cascadia Code", "Fira Code", monospace;
+    font-feature-settings: "liga" 0;
+  }
+
+  /* Selection */
+  ::selection {
+    background-color: hsl(var(--primary-subtle));
+    color: hsl(var(--primary));
+  }
+}
+
+/* ============================================================
+   Component Layer
+   ============================================================ */
+
+@layer components {
+
+  /* Container */
+  .container-editorial {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-narrow {
+    @apply max-w-3xl mx-auto px-4 sm:px-6;
+  }
+
+  .container-wide {
+    @apply max-w-8xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Page section */
+  .page-section {
+    @apply py-12 md:py-16;
+  }
+
+  /* Card — clean surface with border */
+  .card {
+    @apply bg-surface border border-border rounded-lg;
+  }
+
+  .card-padded {
+    @apply card p-5 md:p-6;
+  }
+
+  /* Status badges */
+  .badge-success {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium
+           bg-[hsl(var(--status-success-bg))] text-[hsl(var(--status-success))];
+  }
+
+  .badge-warning {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium
+           bg-[hsl(var(--status-warning-bg))] text-[hsl(var(--status-warning))];
+  }
+
+  .badge-error {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium
+           bg-[hsl(var(--status-error-bg))] text-[hsl(var(--status-error))];
+  }
+
+  .badge-info {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium
+           bg-[hsl(var(--status-info-bg))] text-[hsl(var(--status-info))];
+  }
+
+  .badge-neutral {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium
+           bg-muted text-muted-foreground;
+  }
+
+  /* Demo data banner */
+  .demo-banner {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium
+           bg-[hsl(35,70%,92%)] text-[hsl(35,59%,35%)] border border-[hsl(35,50%,82%)];
+  }
+
+  /* Section divider */
+  .section-divider {
+    @apply border-t border-border my-8;
+  }
+
+  /* Data label + value pair */
+  .data-label {
+    @apply text-xs font-medium uppercase tracking-wide text-text-secondary;
+  }
+
+  .data-value {
+    @apply text-sm font-medium text-text-primary mt-0.5;
+  }
+
+  .data-value-lg {
+    @apply text-lg font-semibold text-text-primary tabular-nums mt-0.5;
+  }
+
+  /* Hash display */
+  .hash-display {
+    @apply font-mono text-xs text-text-secondary bg-muted px-2 py-1 rounded
+           break-all select-all;
+  }
+
+  /* Timeline */
+  .timeline-container {
+    @apply relative;
+  }
+
+  .timeline-line {
+    @apply absolute left-4 top-0 bottom-0 w-px bg-border;
+  }
+
+  .timeline-item {
+    @apply relative flex gap-4 pb-8 last:pb-0;
+  }
+
+  .timeline-marker {
+    @apply relative z-10 flex-shrink-0 w-8 h-8 rounded-full border-2 bg-surface
+           flex items-center justify-center;
+  }
+
+  .timeline-marker-completed {
+    @apply border-[hsl(var(--status-success))] text-[hsl(var(--status-success))];
+  }
+
+  .timeline-marker-current {
+    @apply border-primary text-primary;
+  }
+
+  .timeline-marker-pending {
+    @apply border-border text-muted-foreground;
+  }
+
+  /* Procurement status pill */
+  .status-pill {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  /* Form field group */
+  .field-group {
+    @apply space-y-1.5;
+  }
+
+  .field-label {
+    @apply text-sm font-medium text-text-primary;
+  }
+
+  .field-error {
+    @apply text-xs text-[hsl(var(--status-error))] mt-1;
+  }
+
+  .field-hint {
+    @apply text-xs text-text-secondary mt-1;
+  }
+
+  /* Alert boxes */
+  .alert-info {
+    @apply flex items-start gap-3 p-4 rounded-lg
+           bg-[hsl(var(--status-info-bg))] border border-[hsl(212,40%,87%)];
+  }
+
+  .alert-warning {
+    @apply flex items-start gap-3 p-4 rounded-lg
+           bg-[hsl(var(--status-warning-bg))] border border-[hsl(40,50%,82%)];
+  }
+
+  .alert-error {
+    @apply flex items-start gap-3 p-4 rounded-lg
+           bg-[hsl(var(--status-error-bg))] border border-[hsl(0,40%,87%)];
+  }
+
+  .alert-success {
+    @apply flex items-start gap-3 p-4 rounded-lg
+           bg-[hsl(var(--status-success-bg))] border border-[hsl(149,25%,82%)];
+  }
+
+  /* Loading skeleton */
+  .skeleton {
+    @apply animate-pulse rounded bg-muted;
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 25%,
+      hsl(120, 5%, 92%) 50%,
+      hsl(var(--muted)) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Table styles */
+  .data-table {
+    @apply w-full text-sm;
+  }
+
+  .data-table thead tr {
+    @apply border-b border-border;
+  }
+
+  .data-table thead th {
+    @apply px-4 py-3 text-left text-xs font-medium uppercase tracking-wide
+           text-text-secondary whitespace-nowrap;
+  }
+
+  .data-table tbody tr {
+    @apply border-b border-border last:border-0 hover:bg-muted/40 transition-colors;
+  }
+
+  .data-table tbody td {
+    @apply px-4 py-3.5 text-sm text-text-primary;
+  }
+
+  /* Blockchain proof section */
+  .blockchain-proof {
+    @apply card-padded space-y-3;
+  }
+
+  /* Document card */
+  .doc-card {
+    @apply flex items-start gap-3 p-4 rounded-lg border border-border
+           bg-surface hover:bg-muted/30 transition-colors;
+  }
+
+  /* Stat block */
+  .stat-block {
+    @apply flex flex-col;
+  }
+
+  .stat-value {
+    @apply text-2xl font-bold text-text-primary tabular-nums;
+  }
+
+  .stat-label {
+    @apply text-xs text-text-secondary mt-0.5 uppercase tracking-wide font-medium;
+  }
+
+  /* Navigation link */
+  .nav-link {
+    @apply text-sm font-medium text-text-secondary hover:text-text-primary
+           transition-colors px-1 py-0.5;
+  }
+
+  .nav-link-active {
+    @apply text-sm font-medium text-text-primary;
+  }
+
+  /* Page header */
+  .page-header {
+    @apply border-b border-border bg-surface;
+  }
+
+  .page-header-inner {
+    @apply container-editorial py-6 md:py-8;
+  }
+}
+
+/* ============================================================
+   Utility Layer
+   ============================================================ */
+
+@layer utilities {
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Money display */
+  .money {
+    @apply font-mono tabular-nums font-medium;
+  }
+
+  /* OCID display */
+  .ocid {
+    @apply font-mono text-xs text-text-secondary;
+  }
+
+  /* Procurement status colors */
+  .status-draft       { @apply badge-neutral; }
+  .status-published   { @apply badge-info; }
+  .status-open        { @apply badge-success; }
+  .status-closed      { @apply badge-neutral; }
+  .status-evaluation  { @apply badge-warning; }
+  .status-awarded     { @apply badge-info; }
+  .status-contracted  { @apply badge-success; }
+  .status-implementation { @apply badge-warning; }
+  .status-completed   { @apply badge-success; }
+  .status-cancelled   { @apply badge-error; }
+
+  /* Blockchain status */
+  .anchor-pending   { @apply badge-warning; }
+  .anchor-submitted { @apply badge-info; }
+  .anchor-confirmed { @apply badge-success; }
+  .anchor-failed    { @apply badge-error; }
+
+  /* Signal severity */
+  .severity-info   { @apply badge-info; }
+  .severity-low    { @apply badge-success; }
+  .severity-medium { @apply badge-warning; }
+  .severity-high   { @apply badge-error; }
+}

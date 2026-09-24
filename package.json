@@ -1,0 +1,29 @@
+{
+  "name": "opencontract",
+  "private": true,
+  "version": "0.1.0",
+  "description": "OpenContract — Public procurement transparency and verification platform",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "clean": "turbo run clean",
+    "db:generate": "pnpm --filter @opencontract/database prisma generate",
+    "db:migrate": "pnpm --filter @opencontract/database prisma migrate dev",
+    "db:push": "pnpm --filter @opencontract/database prisma db push",
+    "db:seed": "pnpm --filter @opencontract/database db:seed",
+    "db:studio": "pnpm --filter @opencontract/database prisma studio"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.0",
+    "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "packageManager": "pnpm@10.11.0"
+}
