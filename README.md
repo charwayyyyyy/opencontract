@@ -1,10 +1,10 @@
+# OpenContract
+
 <div align="center">
 
 <img src="apps/web/public/logo.png" alt="OpenContract Logo" width="160" height="160" />
 
-# OpenContract
-
-### *Public money should leave a public trail.*
+## *Public money should leave a public trail.*
 
 **A blockchain-backed public procurement accountability and verification platform.**
 
@@ -45,7 +45,7 @@ Public procurement represents approximately **12% of global GDP** and up to **30
 
 ## 🏗️ System Architecture
 
-```
+```text
                                   ┌────────────────────────┐
                                   │      Citizen / Auditor │
                                   │     (Browser Session)  │
@@ -87,16 +87,17 @@ The blockchain verification layer is built in **Solidity 0.8.28** and tested usi
 
 - **`AccessController.sol`**: Multi-role governance defining `DEFAULT_ADMIN_ROLE`, `OFFICER_ROLE`, and `PUBLISHER_ROLE` with pause and emergency recovery capabilities.
 - **`OpenContractRegistry.sol`**: High-throughput registry mapping each `ocid` (Open Contracting ID) to chronological procurement event fingerprints:
-  ```solidity
-  struct EventAnchor {
-      bytes32 ocidHash;        // keccak256 hash of OCID
-      bytes32 eventHash;       // SHA-256 digest of normalized event data
-      bytes32 documentHash;    // SHA-256 fingerprint of attached PDF/document
-      uint8 eventType;         // 1=Tender, 2=Award, 3=Contract, 4=Implementation, 5=Payment
-      uint64 blockTimestamp;   // Immutable timestamp from block header
-      address recordedBy;      // Authorized officer address
-  }
-  ```
+
+```solidity
+struct EventAnchor {
+    bytes32 ocidHash;        // keccak256 hash of OCID
+    bytes32 eventHash;       // SHA-256 digest of normalized event data
+    bytes32 documentHash;    // SHA-256 fingerprint of attached PDF/document
+    uint8 eventType;         // 1=Tender, 2=Award, 3=Contract, 4=Implementation, 5=Payment
+    uint64 blockTimestamp;   // Immutable timestamp from block header
+    address recordedBy;      // Authorized officer address
+}
+```
 
 ### Foundry Test Suite
 
@@ -110,7 +111,7 @@ pnpm contracts:build
 pnpm contracts:test
 ```
 
-```
+```text
 Ran 5 tests for test/OpenContractRegistry.t.sol:OpenContractRegistryTest
 [PASS] test_AnchorEventByOfficer() (gas: 435938)
 [PASS] test_InitialOwner() (gas: 39553)
@@ -125,6 +126,7 @@ Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 4.44ms
 ## 🔍 In-Browser Document Verification
 
 The verification system provides instant cryptographic proof:
+
 1. **Local Hashing:** The citizen selects or drags a PDF document into the browser.
 2. **Byte Fingerprinting:** The browser calculates `crypto.subtle.digest("SHA-256", buffer)` directly on the user's machine without transmitting the document.
 3. **Database & Blockchain Cross-Check:** The hash is queried against the registered OpenContract repository and Base Sepolia ledger.
@@ -138,6 +140,7 @@ The verification system provides instant cryptographic proof:
 ## 🤖 AI Procurement Analyst (Gemini Flash Lite)
 
 OpenContract integrates Google's **Gemini AI** (`gemini-flash-lite-latest`) configured with strict institutional grounding:
+
 - The system prompt enforces **strict factual grounding** exclusively to the database records (tenders, awards, contracts, payments, milestone dates, and integrity signals).
 - Speculation and external assumptions are explicitly disabled.
 - Responses cite specific procurement identifiers (e.g., `GHA-PA-2026-0041`, `GHA-MOH-2025-0118`) and contract amounts.
@@ -152,7 +155,7 @@ OpenContract integrates Google's **Gemini AI** (`gemini-flash-lite-latest`) conf
 
 OpenContract models data in adherence to the Open Contracting Data Standard:
 
-```
+```text
 Procurement (OCID)
 │
 ├── Tender (Title, Criteria, Budget, Dates, Submission Method)
@@ -171,6 +174,7 @@ Procurement (OCID)
 ## 🚀 Quickstart & Local Setup
 
 ### 1. Prerequisites
+
 - **Node.js** >= 20.0.0
 - **pnpm** >= 10.0.0
 - **Foundry** (`forge`, `cast`, `anvil`) — [Install Guide](https://getfoundry.sh/)

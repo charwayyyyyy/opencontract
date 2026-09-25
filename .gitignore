@@ -21,4 +21,6 @@ contracts/cache/
 coverage/
 .vercel/
 /lib
+/src
+
 
