@@ -1,21 +1,14 @@
 {
   "solidity.compileUsingRemoteVersion": "v0.8.28",
-  "solidity.packageDefaultDependenciesContractsDirectory": "",
+  "solidity.rootFolder": "contracts",
   "solidity.packageDefaultDependenciesDirectory": "lib",
+  "solidity.packageDefaultDependenciesContractsDirectory": "src",
   "solidity.remappings": [
     "forge-std/=lib/forge-std/src/",
-    "forge-std/=contracts/lib/forge-std/src/",
-    "src/=src/",
-    "src/=contracts/src/",
-    "lib/=lib/",
-    "lib/=contracts/lib/"
+    "src/=src/"
   ],
   "solidity.remappingsUnix": [
     "forge-std/=lib/forge-std/src/",
-    "forge-std/=contracts/lib/forge-std/src/",
-    "src/=src/",
-    "src/=contracts/src/",
-    "lib/=lib/",
-    "lib/=contracts/lib/"
+    "src/=src/"
   ]
 }

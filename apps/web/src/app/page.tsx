@@ -504,15 +504,15 @@ function BlockchainExplainer() {
     <div className="card-padded" aria-label="Blockchain proof example">
       <div className="flex items-center gap-2 mb-4">
         <div className="h-2 w-2 rounded-full bg-[hsl(var(--status-success))]" aria-hidden />
-        <span className="text-sm font-medium text-text-primary">Blockchain proof</span>
+        <span className="text-sm font-medium text-text-primary">Blockchain proof (Demo)</span>
         <span className="text-xs text-[hsl(var(--status-success))] ml-auto font-medium">
-          ✓ Anchored
+          ✓ Anchored (Simulated)
         </span>
       </div>
       <dl className="space-y-2.5 text-sm">
         {[
           { label: "Network", value: "Base Sepolia" },
-          { label: "Transaction", value: "0x8a4f…3c2d" },
+          { label: "Transaction", value: "0x8a4f…3c2d (Demo)" },
           { label: "Block", value: "14,893,241" },
           { label: "Anchored", value: "24 Sep 2026" },
         ].map(({ label, value }) => (
@@ -526,8 +526,8 @@ function BlockchainExplainer() {
       </dl>
       <div className="mt-4 pt-4 border-t border-border">
         <p className="text-xs text-text-muted">
-          SHA-256 fingerprint of the procurement event data, anchored at the time of
-          publication.
+          Simulated demo anchor on Base Sepolia. Demonstrates how cryptographic SHA-256 fingerprints are
+          anchored to OpenContractRegistry.sol at the time of publication.
         </p>
       </div>
     </div>

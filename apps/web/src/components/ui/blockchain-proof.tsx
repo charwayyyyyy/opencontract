@@ -101,7 +101,7 @@ export function BlockchainProof({
             aria-hidden
           />
           <span className="text-sm font-medium text-text-primary">
-            Blockchain proof
+            Blockchain proof (Simulated Demo)
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -114,7 +114,7 @@ export function BlockchainProof({
               status === "FAILED" && "text-[hsl(var(--status-error))]"
             )}
           >
-            {status === "CONFIRMED" && "✓ Anchored"}
+            {status === "CONFIRMED" && "✓ Anchored (Demo)"}
             {status === "PENDING" && "Pending"}
             {status === "SUBMITTED" && "Submitted"}
             {status === "FAILED" && "Failed"}
@@ -131,9 +131,13 @@ export function BlockchainProof({
         </div>
       </div>
 
+      <p className="text-[11px] text-text-muted mt-1">
+        Simulated demo anchor on Base Sepolia. Demonstrates the cryptographic anchoring schema.
+      </p>
+
       {status === "CONFIRMED" && transactionHash && !expanded && (
         <div className="mt-1">
-          <HashDisplay hash={transactionHash} label="Transaction" chars={8} />
+          <HashDisplay hash={transactionHash} label="Demo Tx" chars={8} />
         </div>
       )}
 

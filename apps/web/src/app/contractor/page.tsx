@@ -110,9 +110,9 @@ export default async function ContractorPortalPage() {
               <div className="card-padded">
                 <p className="data-label">Total Contract Value</p>
                 <p className="data-value-lg text-[hsl(var(--forest-green))]">
-                  {formatMoney(55200000, "GHS")}
+                  {formatMoney(51800000, "GHS")}
                 </p>
-                <p className="text-[11px] text-text-muted mt-1">Includes approved amendment</p>
+                <p className="text-[11px] text-text-muted mt-1">Includes approved amendment (+9.75%)</p>
               </div>
               <div className="card-padded">
                 <p className="data-label">Completed Milestones</p>

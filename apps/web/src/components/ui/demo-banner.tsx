@@ -17,8 +17,7 @@ export function DemoBanner() {
       <div className="container-wide flex items-center justify-center gap-2 py-1.5">
         <FlaskConical className="w-3.5 h-3.5 flex-shrink-0" aria-hidden />
         <p className="text-xs font-medium">
-          Demo environment — all procurement data is fictional and for demonstration
-          purposes only.
+          DEMO DATA — These records are fictional examples used to demonstrate OpenContract&apos;s verification and transparency workflow.
         </p>
       </div>
     </div>

@@ -39,7 +39,7 @@ Public procurement represents approximately **12% of global GDP** and up to **30
 | **Independent Verification Layer** | EVM Smart Registry on Base Sepolia (`OpenContractRegistry.sol`) anchoring cryptographic SHA-256 fingerprints of milestones and documents. | Anyone can verify procurement records without trusting OpenContract servers or hosting databases. |
 | **Zero-Upload Document Verification** | Browser-side SHA-256 byte hashing via Web Crypto API. Files never leave the citizen's device. | Preserves confidentiality while detecting even single-byte modifications or altered payment figures. |
 | **Deterministic Integrity Signals** | Automated rule engine scanning for single-bidder risks, contract amendments >15%, implementation delays, and supplier concentration. | Highlights records requiring scrutiny without making unsubstantiated accusations. |
-| **Grounded AI Procurement Analyst** | Google Gemini integration with strict context injection of database-backed contracts, payments, and timeline data. | Allows citizens, journalists, and auditors to query complex procurement data in plain language with zero hallucination. |
+| **Grounded AI Procurement Analyst** | Google Gemini integration with strict context injection of database-backed contracts, payments, and timeline data. | Allows citizens, journalists, and auditors to query complex procurement data in plain language grounded in published records. |
 
 ---
 
@@ -72,7 +72,7 @@ Public procurement represents approximately **12% of global GDP** and up to **30
      │   PostgreSQL DB       │ │ Flash Lite Engine │           │   EVM Blockchain  │
      │  - Procurements       │ │ - System Grounding│           │ - AccessController│
      │  - Contracts & Tenders│ │ - Entity Context  │           │ - OpenContract-   │
-     │  - Milestones & Paym. │ │ - No Hallucination│           │   Registry.sol    │
+     │  - Milestones & Paym. │ │ - Context Grounding│           │   Registry.sol    │
      │  - Integrity Signals  │ └───────────────────┘           └───────────────────┘
      └───────────────────────┘
 ```
@@ -143,7 +143,7 @@ OpenContract integrates Google's **Gemini AI** (`gemini-flash-lite-latest`) conf
 
 - The system prompt enforces **strict factual grounding** exclusively to the database records (tenders, awards, contracts, payments, milestone dates, and integrity signals).
 - Speculation and external assumptions are explicitly disabled.
-- Responses cite specific procurement identifiers (e.g., `GHA-PA-2026-0041`, `GHA-MOH-2025-0118`) and contract amounts.
+- Responses cite specific procurement identifiers (e.g., `ocds-demo-2026-000001`, `ocds-demo-2026-000002`) and contract amounts.
 - Users can ask natural language questions such as:
   - *"Which contracts have single-bidder flags or major cost overruns?"*
   - *"What is the completion status and payment progress on the Tema Port project?"*
