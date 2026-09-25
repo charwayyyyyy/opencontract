@@ -5,12 +5,17 @@
  * This seed is for demonstration purposes only.
  */
 
-import { PrismaClient } from "@prisma/client";
+import "dotenv/config";
+import path from "node:path";
+import dotenv from "dotenv";
+
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
+import { prisma } from "../src/client";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
-
-const DEMO_PASSWORD_HASH = await bcrypt.hash("demo1234", 12);
+const DEMO_PASSWORD_HASH = bcrypt.hashSync("demo1234", 12);
 
 async function main() {
   console.log("🌱 Seeding demo data…");

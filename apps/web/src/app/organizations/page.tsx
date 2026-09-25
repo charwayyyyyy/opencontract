@@ -27,7 +27,7 @@ async function getOrganizations() {
           select: { id: true },
         },
         contracts: {
-          where: { status: { in: ["ACTIVE", "AMENDED", "IMPLEMENTATION", "COMPLETED"] } },
+          where: { status: { in: ["ACTIVE", "AMENDED", "COMPLETED"] } },
           select: { id: true },
         },
       },

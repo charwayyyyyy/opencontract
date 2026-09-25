@@ -25,11 +25,11 @@ export async function getPublicStatistics(): Promise<PublicStatistics> {
         where: { status: "OPEN" },
       }),
       prisma.contract.count({
-        where: { status: { in: ["ACTIVE", "AMENDED", "IMPLEMENTATION"] } },
+        where: { status: { in: ["ACTIVE", "AMENDED"] } },
       }),
       prisma.contract.aggregate({
         _sum: { currentAmount: true },
-        where: { status: { in: ["ACTIVE", "AMENDED", "IMPLEMENTATION", "COMPLETED"] } },
+        where: { status: { in: ["ACTIVE", "AMENDED", "COMPLETED"] } },
       }),
       prisma.integritySignal.count({
         where: { isResolved: false },
