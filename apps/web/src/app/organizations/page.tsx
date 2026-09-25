@@ -123,9 +123,9 @@ function OrganizationCard({
     type: string;
     region: string | null;
     country: string;
-    website: string | null;
+    website?: string | null;
     identifier: string | null;
-    isDemo: boolean;
+    isDemo?: boolean;
   };
   procurementCount: number;
   contractCount: number;

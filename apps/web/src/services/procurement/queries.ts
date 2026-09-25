@@ -4,7 +4,7 @@
  * All monetary values returned as strings (from Prisma Decimal) — never floated.
  */
 
-import { prisma } from "@opencontract/database/client";
+import { prisma, Prisma } from "@opencontract/database/client";
 import type {
   ProcurementSummary,
   ProcurementDetail,
@@ -38,7 +38,7 @@ export async function searchProcurements(
     const { q, status, method, region, minValue, maxValue, year, page, pageSize, sortBy, sortOrder } =
       params;
 
-  const where: Parameters<typeof prisma.procurement.findMany>[0]["where"] = {
+  const where: Prisma.ProcurementWhereInput = {
     status: { not: "DRAFT" }, // never expose drafts to public
   };
 
@@ -66,7 +66,7 @@ export async function searchProcurements(
     if (maxValue !== undefined) where.estimatedValue.lte = maxValue;
   }
 
-  const orderBy: Parameters<typeof prisma.procurement.findMany>[0]["orderBy"] = {
+  const orderBy: Prisma.ProcurementOrderByWithRelationInput = {
     [sortBy === "estimatedValue" ? "estimatedValue" : sortBy]: sortOrder,
   };
 
@@ -411,6 +411,7 @@ function buildTimeline(procurement: Awaited<ReturnType<typeof prisma.procurement
     dataHash: string;
     createdAt: Date;
   }>;
+  procuringEntity?: { name: string } | null;
 }): ProcurementDetail["timeline"] {
   const events: ProcurementDetail["timeline"] = [];
 

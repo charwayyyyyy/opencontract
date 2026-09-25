@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function OcdsReleasesPage() {
-  let procurements: Array<{ ocid: string; title: string; status: string; publishedAt: Date }> = [];
+  let procurements: Array<{ ocid: string; title: string; status: string; publishedAt: Date | null }> = [];
   try {
     procurements = await prisma.procurement.findMany({
       where: { status: { not: "DRAFT" } },

@@ -23,6 +23,8 @@
     },
     "allowJs": true,
     "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
     "resolveJsonModule": true,
     "isolatedModules": true
   },
