@@ -14,6 +14,8 @@ prisma/migrations/*.sql
 *.key
 foundry/out/
 foundry/cache/
+out/
+cache/
 contracts/out/
 contracts/cache/
 coverage/

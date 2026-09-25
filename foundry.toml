@@ -1,0 +1,11 @@
+[profile.default]
+src = "contracts/src"
+out = "contracts/out"
+test = "contracts/test"
+script = "contracts/script"
+libs = ["contracts/lib"]
+solc_version = "0.8.28"
+remappings = [
+    "forge-std/=contracts/lib/forge-std/src/",
+    "src/=contracts/src/"
+]
