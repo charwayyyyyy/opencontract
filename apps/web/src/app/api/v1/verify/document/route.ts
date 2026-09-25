@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@opencontract/database/client";
 import { z } from "zod";
-import type { VerificationResult } from "@opencontract/types";
+import type {
+  VerificationResult,
+  DocumentCategory,
+  DocumentVisibility,
+  DocumentStatus,
+} from "@opencontract/types";
 import { getDemoDocumentBySha256 } from "@/services/procurement/demo-data";
 
 const verifySchema = z.object({
@@ -123,9 +128,9 @@ export async function POST(request: NextRequest) {
         mimeType: document.mimeType,
         sizeBytes: document.sizeBytes.toString(),
         sha256: document.sha256,
-        category: document.category as VerificationResult["matchedDocument"]["category"],
-        visibility: document.visibility as VerificationResult["matchedDocument"]["visibility"],
-        status: document.status as VerificationResult["matchedDocument"]["status"],
+        category: document.category as DocumentCategory,
+        visibility: document.visibility as DocumentVisibility,
+        status: document.status as DocumentStatus,
         createdAt: document.createdAt.toISOString(),
         isDemo: document.isDemo,
         ocid: document.procurement?.ocid,

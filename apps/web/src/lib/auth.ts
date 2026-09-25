@@ -5,6 +5,8 @@ import { prisma } from "@opencontract/database/client";
 import bcrypt from "bcryptjs";
 import { signInSchema } from "@opencontract/validation";
 
+import { authConfig } from "./auth.config";
+
 declare module "next-auth" {
   interface Session {
     user: {
@@ -20,12 +22,9 @@ declare module "next-auth" {
   }
 }
 
-export const authConfig: NextAuthConfig = {
+export const nextAuthConfig: NextAuthConfig = {
+  ...authConfig,
   adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: "jwt",
-    maxAge: 8 * 60 * 60, // 8 hours
-  },
   providers: [
     Credentials({
       name: "credentials",
@@ -88,4 +87,5 @@ export const authConfig: NextAuthConfig = {
   trustHost: true,
 };
 
-export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
+export const { handlers, auth, signIn, signOut } = NextAuth(nextAuthConfig);
+export { authConfig };

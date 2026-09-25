@@ -1,10 +1,23 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalEnv": [
+    "DATABASE_URL",
+    "AUTH_SECRET",
+    "NEXTAUTH_URL",
+    "GOOGLE_AI_API_KEY",
+    "GEMINI_API_KEY",
+    "BLOCKCHAIN_RPC_URL",
+    "BLOCKCHAIN_CONTRACT_ADDRESS",
+    "BLOCKCHAIN_NETWORK",
+    "STORAGE_PROVIDER",
+    "STORAGE_LOCAL_PATH",
+    "NODE_ENV"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "src/generated/**"]
     },
     "dev": {
       "cache": false,
