@@ -5,7 +5,8 @@
   "description": "OpenContract — Public procurement transparency and verification platform",
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
+    "build": "pnpm db:generate && pnpm db:push && pnpm db:seed && turbo run build",
+    "demo": "playwright test demo/",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
@@ -19,7 +20,8 @@
   "devDependencies": {
     "turbo": "^2.5.0",
     "typescript": "^5.8.0",
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "@playwright/test": "^1.42.0"
   },
   "engines": {
     "node": ">=20.0.0",

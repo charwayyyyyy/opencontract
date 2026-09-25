@@ -23,4 +23,5 @@ coverage/
 /lib
 /src
 
-
+artifacts/
+*.webm
