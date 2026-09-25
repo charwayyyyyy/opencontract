@@ -16,7 +16,7 @@ const footerLinks = {
   Technical: [
     { label: "API reference", href: "/docs/api" },
     { label: "OCDS data", href: "/ocds/releases" },
-    { label: "GitHub", href: "https://github.com" },
+    { label: "GitHub", href: "https://github.com/charwayyyyyy/opencontract" },
   ],
 } as const;
 

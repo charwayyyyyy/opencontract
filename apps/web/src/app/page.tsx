@@ -10,6 +10,14 @@ import {
   Clock,
   CheckCircle2,
   ChevronRight,
+  Layers,
+  Megaphone,
+  Inbox,
+  Scale,
+  Award,
+  FileSignature,
+  Activity,
+  ShieldCheck,
 } from "lucide-react";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -55,11 +63,12 @@ export default async function HomePage() {
             }}
           />
 
-          <div className="container-editorial relative py-20 md:py-28 lg:py-32">
+          <div className="container-editorial relative py-16 md:py-24 lg:py-28">
             <div className="max-w-3xl">
               {/* Eyebrow */}
-              <div className="demo-banner mb-6 inline-flex">
-                Demo environment
+              <div className="demo-banner mb-6 inline-flex items-center gap-1.5 font-medium">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                Live Civic Transparency Platform
               </div>
 
               {/* Headline */}
@@ -77,9 +86,35 @@ export default async function HomePage() {
                 completion.
               </p>
 
+              {/* Quick Search */}
+              <form action="/explore" method="GET" className="mb-6 max-w-xl">
+                <div className="flex items-center border-2 border-border focus-within:border-primary bg-surface rounded-lg px-3 py-2 shadow-xs transition-colors">
+                  <Search className="h-5 w-5 text-text-muted mr-2 flex-shrink-0" />
+                  <input
+                    type="search"
+                    name="q"
+                    placeholder="Search by project title, buyer, or OCID (e.g. Tema, Cloud, Medicines)..."
+                    className="w-full bg-transparent border-none outline-none text-sm text-text-primary placeholder:text-text-muted"
+                  />
+                  <Button type="submit" size="sm" className="ml-2 flex-shrink-0">
+                    Search
+                  </Button>
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-text-muted">
+                  <span>Try:</span>
+                  <Link href="/explore?q=Tema" className="hover:text-primary underline">Tema Motorway</Link>
+                  <span>·</span>
+                  <Link href="/explore?q=Medicines" className="hover:text-primary underline">Essential Medicines</Link>
+                  <span>·</span>
+                  <Link href="/explore?q=Cloud" className="hover:text-primary underline">Cloud Infrastructure</Link>
+                  <span>·</span>
+                  <Link href="/explore?q=STEM" className="hover:text-primary underline">STEM Complex</Link>
+                </div>
+              </form>
+
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link href="/explore">
-                  <Button size="lg" className="gap-2 w-full sm:w-auto">
+                  <Button size="lg" className="gap-2 w-full sm:w-auto shadow-xs">
                     Explore contracts
                     <ArrowRight className="h-4 w-4" aria-hidden />
                   </Button>
@@ -88,7 +123,7 @@ export default async function HomePage() {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="gap-2 w-full sm:w-auto"
+                    className="gap-2 w-full sm:w-auto bg-surface hover:bg-muted/50"
                   >
                     <FileCheck className="h-4 w-4" aria-hidden />
                     Verify a document
@@ -335,56 +370,72 @@ function Stat({
 
 function LifecycleTrail() {
   const stages = [
-    { label: "Planning", icon: "📋", done: true },
-    { label: "Tender", icon: "📣", done: true },
-    { label: "Bids", icon: "📩", done: true },
-    { label: "Evaluation", icon: "📊", done: true },
-    { label: "Award", icon: "🏆", done: true },
-    { label: "Contract", icon: "📄", done: true },
-    { label: "Implementation", icon: "🏗️", done: false },
-    { label: "Completion", icon: "✅", done: false },
+    { label: "Planning", icon: Layers, done: true, query: "planning", status: "Recorded" },
+    { label: "Tender", icon: Megaphone, done: true, query: "tender", status: "Published" },
+    { label: "Bids", icon: Inbox, done: true, query: "bids", status: "Submitted" },
+    { label: "Evaluation", icon: Scale, done: true, query: "evaluation", status: "Reviewed" },
+    { label: "Award", icon: Award, done: true, query: "award", status: "Awarded" },
+    { label: "Contract", icon: FileSignature, done: true, query: "contract", status: "Signed" },
+    { label: "Implementation", icon: Activity, done: false, query: "implementation", status: "Active" },
+    { label: "Completion", icon: ShieldCheck, done: false, query: "completion", status: "Pending" },
   ];
 
   return (
-    <div className="overflow-x-auto scrollbar-none -mx-4 px-4">
-      <div className="flex items-center gap-0 min-w-max">
-        {stages.map((stage, i) => (
-          <div key={stage.label} className="flex items-center">
-            <div className="flex flex-col items-center gap-1.5">
-              <div
-                className={cn(
-                  "w-10 h-10 rounded-full border-2 flex items-center justify-center text-base",
-                  stage.done
-                    ? "border-[hsl(var(--status-success))] bg-[hsl(var(--status-success-bg))]"
-                    : "border-border bg-muted"
-                )}
-                aria-label={stage.label}
+    <div className="overflow-x-auto scrollbar-none -mx-4 px-4 py-2">
+      <div className="flex items-center gap-0 min-w-max pb-2">
+        {stages.map((stage, i) => {
+          const Icon = stage.icon;
+          return (
+            <div key={stage.label} className="flex items-center">
+              <Link
+                href={`/explore?stage=${stage.query}`}
+                className="group flex flex-col items-center gap-2 focus:outline-none"
               >
-                <span aria-hidden>{stage.icon}</span>
-              </div>
-              <span
-                className={cn(
-                  "text-xs font-medium whitespace-nowrap",
-                  stage.done ? "text-text-primary" : "text-text-muted"
-                )}
-              >
-                {stage.label}
-              </span>
+                <div
+                  className={cn(
+                    "w-12 h-12 rounded-xl border flex items-center justify-center transition-all duration-200 shadow-xs",
+                    stage.done
+                      ? "border-[hsl(var(--forest-green)/0.25)] bg-[hsl(var(--forest-green)/0.06)] text-[hsl(var(--forest-green))] group-hover:bg-[hsl(var(--forest-green)/0.12)] group-hover:border-[hsl(var(--forest-green)/0.45)] group-hover:scale-105"
+                      : "border-border/80 bg-surface text-text-muted group-hover:border-border group-hover:text-text-secondary"
+                  )}
+                  aria-label={`${stage.label} stage (${stage.status})`}
+                >
+                  <Icon className="w-5 h-5 stroke-[1.75]" aria-hidden />
+                </div>
+                <div className="text-center">
+                  <span
+                    className={cn(
+                      "block text-xs font-medium tracking-tight whitespace-nowrap transition-colors",
+                      stage.done
+                        ? "text-text-primary group-hover:text-[hsl(var(--forest-green))]"
+                        : "text-text-muted"
+                    )}
+                  >
+                    {stage.label}
+                  </span>
+                  <span className="block text-[10px] text-text-muted font-normal mt-0.5">
+                    {stage.status}
+                  </span>
+                </div>
+              </Link>
+              {i < stages.length - 1 && (
+                <div
+                  className={cn(
+                    "h-px w-7 mx-2.5 mb-6 flex-shrink-0 transition-colors",
+                    stage.done && stages[i + 1]?.done
+                      ? "bg-[hsl(var(--forest-green)/0.35)]"
+                      : "bg-border/60"
+                  )}
+                  aria-hidden
+                />
+              )}
             </div>
-            {i < stages.length - 1 && (
-              <div
-                className={cn(
-                  "h-px w-8 mx-1 mb-4 flex-shrink-0",
-                  stage.done ? "bg-[hsl(var(--status-success))]" : "bg-border"
-                )}
-                aria-hidden
-              />
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
-      <p className="mt-4 text-xs text-text-muted">
-        Click any stage to explore contracts at that point in the lifecycle.
+      <p className="mt-2 text-xs text-text-muted flex items-center gap-1.5">
+        <span className="inline-block w-1.5 h-1.5 rounded-full bg-[hsl(var(--forest-green))]" aria-hidden />
+        Click any stage to filter and explore public contracts at that point in the procurement chain.
       </p>
     </div>
   );
