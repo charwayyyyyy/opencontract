@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { ProcurementExplorer } from "@/components/procurement/procurement-explorer";
+import { ProcurementListSkeleton } from "@/components/ui/states";
 
 export const metadata: Metadata = {
   title: "Explore procurements",
@@ -24,9 +26,25 @@ export default function ExplorePage() {
             </p>
           </div>
         </div>
-        <ProcurementExplorer />
+        <Suspense fallback={<ProcurementExplorerSkeleton />}>
+          <ProcurementExplorer />
+        </Suspense>
       </main>
       <SiteFooter />
     </>
+  );
+}
+
+function ProcurementExplorerSkeleton() {
+  return (
+    <div className="container-editorial py-6" aria-hidden>
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
+        <div className="relative flex-1">
+          <div className="skeleton h-9 w-full rounded-md" />
+        </div>
+        <div className="skeleton h-9 w-24 rounded-md" />
+      </div>
+      <ProcurementListSkeleton />
+    </div>
   );
 }
