@@ -50,7 +50,7 @@ opencontract/
 │           │   ├── contracts/ # Dynamic contract dossier and audit trail pages
 │           │   ├── explore/   # Search and multi-facet procurement filter
 │           │   ├── signals/   # Red-flag risk and integrity detector
-│           │   ├── verify/    # In-browser zero-upload document verifier
+│           │   ├── verify/    # In-browser client-side document verifier
 │           │   └── api/v1/    # REST endpoints (procurements, analyst, verification)
 │           ├── components/    # Reusable UI components, headers, footers
 │           ├── lib/           # Web3 client, hash utilities, formatters
@@ -214,7 +214,7 @@ OpenContract was built deliberately using modern, high-reliability technologies 
 
 ### 3. Solidity 0.8.28 & Foundry
 
-- **`OpenContractRegistry.sol`:** Stores immutable cryptographic digests of each procurement milestone on-chain (`ocidHash`, `eventHash`, `documentHash`, `blockTimestamp`).
+- **`OpenContractRegistry.sol`:** Stores tamper-evident cryptographic digests of each procurement milestone on-chain (`ocidHash`, `eventHash`, `documentHash`, `blockTimestamp`).
 - **`AccessController.sol`:** Granular OpenZeppelin role-based security protecting state modifications from unauthorized entities.
 - **Foundry Toolchain:** Fast compilation and automated property-based testing written directly in Solidity.
 
@@ -233,9 +233,9 @@ OpenContract was built deliberately using modern, high-reliability technologies 
 - **Light-First Editorial Palette:** Designed after civic standards like GOV.UK, USDS, and investigative journalism outlets (off-white `#F7F7F4`, crisp card surfaces `#FFFFFF`, deep forest green `#2C5F3C`).
 - **Zero Generic Graphics:** Clean typography, minimalist Lucide SVG icons with `stroke-width={1.75}`, and accessible contrast ratios (WCAG AAA compliant).
 
-### 7. Web Crypto API (Zero-Knowledge In-Browser Hashing)
+### 7. Web Crypto API (Client-Side In-Browser Hashing)
 
-- **Client-Side SHA-256:** Document integrity verification is calculated entirely inside the browser's JavaScript V8 thread using `crypto.subtle.digest("SHA-256", buffer)`.
+- **Client-Side SHA-256:** Document fingerprinting is calculated entirely inside the browser's JavaScript V8 thread using `crypto.subtle.digest("SHA-256", buffer)`.
 - **Zero Document Leakage:** Confidential draft tenders or bid proposals are never transmitted to OpenContract servers. Only the resulting 32-byte hexadecimal hash is checked against the database and blockchain.
 
 ---

@@ -53,7 +53,7 @@ SHA-256 Hash:  ${doc.sha256}
 Generated At:  ${new Date().toISOString()}
 
 NOTICE:
-This is an authentic demonstration verification copy generated from the
+This is a demonstration verification copy generated from the
 OpenContract procurement registry. The cryptographic SHA-256 fingerprint
 above is anchored to the Base Sepolia blockchain testnet.
 

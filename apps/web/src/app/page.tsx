@@ -19,6 +19,7 @@ import {
   FileSignature,
   Activity,
   ShieldCheck,
+  MessageSquare,
 } from "lucide-react";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -70,7 +71,7 @@ export default async function HomePage() {
                 {/* Eyebrow */}
                 <div className="demo-banner mb-6 inline-flex items-center gap-1.5 font-medium">
                   <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                  Live Civic Transparency Platform
+                  Civic procurement transparency
                 </div>
 
                 {/* Headline */}
@@ -84,8 +85,8 @@ export default async function HomePage() {
 
                 <p className="text-body-lg text-text-secondary max-w-xl mb-8 leading-relaxed">
                   OpenContract makes public procurement easier to trace, understand
-                  and independently verify — from tender publication to contract
-                  completion.
+                  and independently verify — from tender publication through contracts,
+                  amendments and payments.
                 </p>
 
                 {/* Quick Search */}
@@ -134,6 +135,15 @@ export default async function HomePage() {
                     </Button>
                   </Link>
                 </div>
+                <div className="mt-6 flex flex-wrap items-center gap-2 text-xs font-medium text-text-muted">
+                  <span>OCDS-aligned records</span>
+                  <span aria-hidden>·</span>
+                  <span>SHA-256 verification</span>
+                  <span aria-hidden>·</span>
+                  <span>Base Sepolia anchoring</span>
+                  <span aria-hidden>·</span>
+                  <span>Grounded AI</span>
+                </div>
               </div>
               
               <div className="flex-1 w-full max-w-md lg:max-w-xl relative">
@@ -147,6 +157,44 @@ export default async function HomePage() {
                   />
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Demo Data Disclosure ──────────────────────────── */}
+        <div className="bg-surface border-b border-border py-2 text-center px-4" aria-label="Demo data disclosure">
+          <p className="text-xs text-text-muted font-medium">
+            <span className="text-text-primary font-semibold mr-1">DEMO DATA</span> 
+            — Fictional procurement records are used to demonstrate the OpenContract workflow.
+          </p>
+        </div>
+
+        {/* ── Product Workflow ──────────────────────────────── */}
+        <section className="border-b border-border bg-background" aria-label="Product workflow">
+          <div className="container-editorial py-12 md:py-16">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-6 relative">
+              <div className="hidden md:block absolute top-[15px] left-[10%] right-[10%] h-px bg-border" aria-hidden />
+              {[
+                { step: "01", title: "Explore", desc: "Find procurement records, organizations and contracts.", icon: Search },
+                { step: "02", title: "Understand", desc: "Follow the lifecycle from tender through award, contract, amendments and payments.", icon: Layers },
+                { step: "03", title: "Verify", desc: "Check published document fingerprints against registered records.", icon: FileCheck },
+                { step: "04", title: "Investigate", desc: "Review explainable signals when procurement data deserves closer attention.", icon: AlertTriangle },
+                { step: "05", title: "Ask", desc: "Use the AI analyst to ask questions about the available evidence.", icon: MessageSquare },
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.step} className="relative flex flex-col md:items-start items-center text-center md:text-left z-10 bg-background">
+                    <div className="mb-4 inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-surface bg-background text-[hsl(var(--forest-green))] shadow-sm ring-1 ring-border flex-shrink-0">
+                      <Icon className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-bold text-text-muted mb-1 tracking-widest">{item.step}</div>
+                      <h3 className="text-sm font-semibold text-text-primary mb-1.5">{item.title}</h3>
+                      <p className="text-xs text-text-secondary leading-relaxed max-w-[200px] mx-auto md:mx-0">{item.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>

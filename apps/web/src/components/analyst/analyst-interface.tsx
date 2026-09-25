@@ -99,7 +99,7 @@ export function AnalystInterface() {
         <div className="text-sm text-[hsl(212,47%,35%)]">
           <p className="font-medium mb-0.5">How this works</p>
           <p>
-            The analyst uses the OpenContract database as its source of truth.
+            The analyst is grounded in OpenContract's canonical procurement records and distinguishes available evidence from missing information.
             It can only answer questions about procurement records in this system.
             Always verify key facts against the source records.
           </p>

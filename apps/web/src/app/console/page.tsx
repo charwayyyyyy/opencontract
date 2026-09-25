@@ -134,7 +134,7 @@ export default async function ConsolePage() {
                   All procurement events are fingerprinted with SHA-256 and anchored to Base Sepolia
                 </h3>
                 <p className="text-xs text-text-secondary max-w-2xl">
-                  As an authorized Procurement Officer, your publication actions generate immutable cryptographic
+                  As an authorized Procurement Officer, your publication actions generate tamper-evident cryptographic
                   milestones recorded by <span className="font-mono text-text-primary">OpenContractRegistry.sol</span>.
                 </p>
               </div>

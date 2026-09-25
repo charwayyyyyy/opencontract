@@ -132,7 +132,7 @@ export default async function DashboardPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
                 { href: "/explore", label: "Browse contracts", description: "Search all public procurement records" },
-                { href: "/verify", label: "Verify a document", description: "Check document authenticity" },
+                { href: "/verify", label: "Verify a document", description: "Check document fingerprint" },
                 { href: "/signals", label: "Review signals", description: `${stats.pendingSignals} signals pending` },
               ].map((item) => (
                 <Link key={item.href} href={item.href} className="card-padded hover:shadow-sm transition-shadow">

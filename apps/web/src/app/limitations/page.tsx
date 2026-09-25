@@ -34,19 +34,15 @@ export default function LimitationsPage() {
             <div className="flex items-center gap-2 mb-3">
               <AlertTriangle className="h-5 w-5 text-[hsl(var(--status-warning))]" />
               <h2 className="text-heading-lg text-text-primary">
-                What Cryptographic Anchoring Does and Does Not Prove
+                Blockchain Cannot Establish Truthfulness
               </h2>
             </div>
             <div className="space-y-4 text-body text-text-secondary leading-relaxed">
               <p>
-                <strong>What it proves:</strong> Cryptographic anchoring on the blockchain proves that a specific
-                procurement event, contract value, or document hash existed in that exact form at that specific block time.
-                It guarantees the record has not been altered since publication.
+                Blockchain anchoring establishes that a specific fingerprint was registered at a specific time. It guarantees the registered record has not been altered since publication.
               </p>
               <p>
-                <strong>What it does not prove:</strong> Blockchain anchoring cannot verify whether the human beings who
-                drafted the document told the truth, whether market prices were fair, or whether construction materials
-                meet quality specifications on the ground.
+                However, <strong>the blockchain cannot establish the truthfulness of original inputs.</strong> It cannot verify whether the procurement legally occurred, whether the prices were fair, or whether the publisher was telling the truth. Blockchain verification establishes fingerprint registration, not legal authenticity or factual truth.
               </p>
             </div>
           </section>
@@ -58,19 +54,15 @@ export default function LimitationsPage() {
             <div className="flex items-center gap-2 mb-3">
               <Scale className="h-5 w-5 text-primary" />
               <h2 className="text-heading-lg text-text-primary">
-                Integrity Signals Are Not Findings of Guilt
+                Integrity Signals Are Indicators For Review
               </h2>
             </div>
             <div className="space-y-4 text-body text-text-secondary leading-relaxed">
               <p>
-                OpenContract automatically flags patterns such as single-bidder tenders, contract amendments
-                exceeding 15%, implementation delays, or high supplier concentration.
+                OpenContract automatically flags patterns such as single-bidder tenders, major amendments, or significant delays.
               </p>
               <p>
-                These flags are <strong>signals for human audit review</strong>, not accusations of wrongdoing.
-                A single bidder may result from specialized technical requirements; an amendment may be legitimate
-                due to unexpected geological conditions. Only formal investigative bodies (auditor generals, anti-corruption
-                commissions, parliamentary committees) have the authority to determine culpability.
+                These flags are <strong>indicators for review, not findings of misconduct.</strong> A single bidder may result from specialized technical requirements; an amendment may be legitimate. They do not represent findings of criminality, fraud, or corruption.
               </p>
             </div>
           </section>
@@ -82,14 +74,32 @@ export default function LimitationsPage() {
             <div className="flex items-center gap-2 mb-3">
               <Info className="h-5 w-5 text-[hsl(var(--status-info))]" />
               <h2 className="text-heading-lg text-text-primary">
-                Demonstration Environment
+                Incomplete Data & AI Limitations
               </h2>
             </div>
             <div className="space-y-4 text-body text-text-secondary leading-relaxed">
               <p>
-                The active deployment is a demonstration environment populated with realistic but fictionalized
-                records to illustrate end-to-end functionality. Production deployments connect to national public procurement
-                authority APIs and treasury financial management systems.
+                <strong>Incomplete visibility:</strong> OpenContract can only analyze records that are officially published. Incomplete source data produces incomplete visibility. If a contract is not registered in the system, it cannot be verified or analyzed.
+              </p>
+              <p>
+                <strong>AI boundaries:</strong> AI responses depend entirely on the available canonical records. The AI analyst does not know facts outside the published procurement database.
+              </p>
+            </div>
+          </section>
+
+          <div className="section-divider" />
+
+          {/* Section 4 */}
+          <section>
+            <div className="flex items-center gap-2 mb-3">
+              <Info className="h-5 w-5 text-[hsl(var(--status-info))]" />
+              <h2 className="text-heading-lg text-text-primary">
+                Demo Environment
+              </h2>
+            </div>
+            <div className="space-y-4 text-body text-text-secondary leading-relaxed">
+              <p>
+                DEMO DATA — The procurement records, organizations, and blockchain anchors in this deployment are fictional. They are used exclusively to demonstrate the OpenContract workflow and do not represent actual government procurement data.
               </p>
             </div>
           </section>

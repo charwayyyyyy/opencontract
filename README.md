@@ -27,7 +27,7 @@
 
 Public procurement represents approximately **12% of global GDP** and up to **30% of government expenditure in developing economies**. Yet, citizens, civil society watchdogs, investigative journalists, and oversight agencies often face opaque data silos, untracked contract amendments, missing audit trails, and document tampering.
 
-**OpenContract** is an institutional-grade, light-first civic infrastructure platform designed to make public procurement transparent, traceable, and independently verifiable. By unifying the **Open Contracting Data Standard (OCDS 1.1)** with **EVM blockchain immutability (Base Sepolia)**, **client-side cryptographic hashing**, and **grounded Gemini AI intelligence**, OpenContract provides an unalterable trail for every public dollar.
+**OpenContract** is an institutional-grade, light-first civic infrastructure platform designed to make public procurement transparent, traceable, and independently verifiable. By unifying the **Open Contracting Data Standard (OCDS 1.1)** with **EVM blockchain immutability (Base Sepolia)**, **client-side cryptographic hashing**, and **grounded Gemini AI intelligence**, OpenContract provides a public evidence layer for tracing procurement from tender publication through contracts, amendments, payments and implementation.
 
 ---
 
@@ -37,7 +37,7 @@ Public procurement represents approximately **12% of global GDP** and up to **30
 | :--- | :--- | :--- |
 | **Complete Lifecycle Tracking** | OCDS 1.1 normalized data model covering Planning, Tender, Bids, Evaluation, Award, Contract, Implementation, and Completion. | Prevents silent disappearance of tender requirements or post-award scope manipulation. |
 | **Independent Verification Layer** | EVM Smart Registry on Base Sepolia (`OpenContractRegistry.sol`) anchoring cryptographic SHA-256 fingerprints of milestones and documents. | Anyone can verify procurement records without trusting OpenContract servers or hosting databases. |
-| **Zero-Upload Document Verification** | Browser-side SHA-256 byte hashing via Web Crypto API. Files never leave the citizen's device. | Preserves confidentiality while detecting even single-byte modifications or altered payment figures. |
+| **Client-side Document Verification** | The document is hashed locally in your browser; the document bytes are not uploaded as part of the verification process. | Preserves confidentiality while checking if bytes match the registered fingerprint. |
 | **Deterministic Integrity Signals** | Automated rule engine scanning for single-bidder risks, contract amendments >15%, implementation delays, and supplier concentration. | Highlights records requiring scrutiny without making unsubstantiated accusations. |
 | **Grounded AI Procurement Analyst** | Google Gemini integration with strict context injection of database-backed contracts, payments, and timeline data. | Allows citizens, journalists, and auditors to query complex procurement data in plain language grounded in published records. |
 
@@ -94,7 +94,7 @@ struct EventAnchor {
     bytes32 eventHash;       // SHA-256 digest of normalized event data
     bytes32 documentHash;    // SHA-256 fingerprint of attached PDF/document
     uint8 eventType;         // 1=Tender, 2=Award, 3=Contract, 4=Implementation, 5=Payment
-    uint64 blockTimestamp;   // Immutable timestamp from block header
+    uint64 blockTimestamp;   // Tamper-evident timestamp from block header
     address recordedBy;      // Authorized officer address
 }
 ```
@@ -263,7 +263,7 @@ pnpm test
 | `/signals` | Red-flag monitoring engine categorizing single-bidder, amendment overrun, delay, and concentration signals. |
 | `/organizations` | Directory of procuring entities, procuring ministries, and private contractors. |
 | `/analyst` | Grounded AI civic audit chat interface powered by Gemini Flash Lite. |
-| `/methodology` | Documentation on data collection, OCDS standard compliance, and cryptographic verification guarantees. |
+| `/methodology` | Documentation on data collection, OCDS standard compliance, and the evidence model. |
 
 ---
 
@@ -272,7 +272,7 @@ pnpm test
 1. **Tamper-Evident Ledgers**: Once a milestone or document SHA-256 hash is anchored on Base Sepolia, it cannot be rewritten, backdated, or deleted.
 2. **Local Cryptographic Privacy**: The citizen's documents are never uploaded to OpenContract servers for hashing.
 3. **No Black-Box Accusations**: Integrity signals are deterministic, rule-based indicators flagged for review — never unverified allegations.
-4. **Hallucination-Resistant AI**: The AI analyst answers exclusively from verified database records with entity citations.
+4. **Grounded AI Analyst**: The AI analyst answers exclusively from canonical database records with entity citations.
 
 ---
 

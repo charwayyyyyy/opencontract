@@ -97,7 +97,7 @@ export default function DocsPage() {
           <div className="card-padded bg-surface border border-border">
             <h3 className="text-heading-sm text-text-primary mb-3">Smart Contract Reference</h3>
             <p className="text-sm text-text-secondary mb-4 leading-relaxed">
-              OpenContract deploys an immutable event and document registry contract on Base Sepolia:
+              OpenContract deploys a tamper-evident event and document registry contract on Base Sepolia:
             </p>
             <dl className="text-xs space-y-2 font-mono">
               <div className="flex justify-between py-1 border-b border-border">
