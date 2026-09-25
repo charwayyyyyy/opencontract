@@ -166,13 +166,23 @@ export function SiteHeader() {
               </Link>
             ))}
             {session?.user ? (
-              <Link
-                href={roleConsoleHref(session.user.role)}
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center px-3 py-2.5 text-sm font-medium text-primary"
-              >
-                {roleConsoleLabel(session.user.role)}
-              </Link>
+              <div className="pt-2 border-t border-border space-y-1">
+                <Link
+                  href={roleConsoleHref(session.user.role)}
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center px-3 py-2 text-sm font-medium text-[hsl(var(--forest-green))]"
+                >
+                  {roleConsoleLabel(session.user.role)}
+                </Link>
+                <Link
+                  href="/profile"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text-primary"
+                >
+                  <UserIcon className="h-4 w-4" />
+                  Profile &amp; Account
+                </Link>
+              </div>
             ) : (
               <Link
                 href="/auth/signin"
