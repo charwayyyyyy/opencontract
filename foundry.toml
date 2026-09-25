@@ -3,9 +3,11 @@ src = "contracts/src"
 out = "contracts/out"
 test = "contracts/test"
 script = "contracts/script"
-libs = ["contracts/lib"]
+libs = ["contracts/lib", "lib"]
 solc_version = "0.8.28"
 remappings = [
     "forge-std/=contracts/lib/forge-std/src/",
-    "src/=contracts/src/"
+    "src/=contracts/src/",
+    "lib/=contracts/lib/",
+    "lib/forge-std/src/=contracts/lib/forge-std/src/"
 ]
