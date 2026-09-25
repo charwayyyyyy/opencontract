@@ -55,7 +55,7 @@ export default async function ContractorPortalPage() {
           include: { supplier: { select: { name: true } } },
         },
         contracts: true,
-        milestones: { orderBy: { sequenceNumber: "asc" } },
+        milestones: { orderBy: { plannedDate: "asc" } },
         blockchainAnchors: { take: 2 },
       },
     });

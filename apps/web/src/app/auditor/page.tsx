@@ -40,7 +40,7 @@ export default async function AuditorConsolePage() {
   let highVarianceProcurements: any[] = [];
   try {
     signals = await prisma.integritySignal.findMany({
-      orderBy: { detectedAt: "desc" },
+      orderBy: { createdAt: "desc" },
       take: 6,
       include: {
         procurement: {
