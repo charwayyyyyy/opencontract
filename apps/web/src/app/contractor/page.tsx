@@ -54,8 +54,11 @@ export default async function ContractorPortalPage() {
         awards: {
           include: { supplier: { select: { name: true } } },
         },
-        contracts: true,
-        milestones: { orderBy: { plannedDate: "asc" } },
+        contracts: {
+          include: {
+            milestones: { orderBy: { plannedDate: "asc" } },
+          },
+        },
         blockchainAnchors: { take: 2 },
       },
     });
@@ -140,6 +143,7 @@ export default async function ContractorPortalPage() {
             <div className="space-y-4">
               {procurements.map((proc) => {
                 const contract = proc.contracts[0];
+                const milestones = contract?.milestones ?? [];
                 return (
                   <div key={proc.id} className="card-padded border border-border/80 bg-surface shadow-xs">
                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-4 border-b border-border">
@@ -178,7 +182,7 @@ export default async function ContractorPortalPage() {
                         Delivery Milestones &amp; Work Progress
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                        {proc.milestones.map((ms: any) => (
+                        {milestones.map((ms: any) => (
                           <div
                             key={ms.id}
                             className="p-3 rounded-lg border border-border/60 bg-muted/30 text-xs space-y-1"
@@ -201,7 +205,7 @@ export default async function ContractorPortalPage() {
                               {ms.description}
                             </p>
                             <p className="text-[10px] text-text-muted font-mono">
-                              Due: {formatDate(ms.dueDate)}
+                              Due: {formatDate(ms.plannedDate)}
                             </p>
                           </div>
                         ))}
