@@ -1,0 +1,40 @@
+<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Glowing background effect -->
+  <circle cx="250" cy="250" r="180" fill="#10b981" fill-opacity="0.08" filter="blur(40px)" />
+  
+  <!-- Network Connections -->
+  <path d="M140 320 L250 320" stroke="#cbd5e1" stroke-width="4" stroke-dasharray="8 8"/>
+  <path d="M250 320 L360 320" stroke="#cbd5e1" stroke-width="4" stroke-dasharray="8 8"/>
+  <path d="M120 340 L250 420" stroke="#cbd5e1" stroke-width="4" stroke-dasharray="8 8"/>
+  <path d="M380 340 L250 420" stroke="#cbd5e1" stroke-width="4" stroke-dasharray="8 8"/>
+  <path d="M250 320 L250 400" stroke="#cbd5e1" stroke-width="4" stroke-dasharray="8 8"/>
+
+  <!-- Document Base -->
+  <rect x="160" y="80" width="180" height="240" rx="12" fill="#ffffff" stroke="#1e293b" stroke-width="8"/>
+  
+  <!-- Document Details -->
+  <!-- Top Fold -->
+  <path d="M290 80 L340 130 L290 130 Z" fill="#f8fafc" stroke="#1e293b" stroke-width="8" stroke-linejoin="round"/>
+  
+  <line x1="195" y1="150" x2="305" y2="150" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+  <line x1="195" y1="185" x2="305" y2="185" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+  <line x1="195" y1="220" x2="260" y2="220" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+  <line x1="195" y1="255" x2="280" y2="255" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Nodes -->
+  <!-- Node 1 -->
+  <rect x="90" y="290" width="60" height="60" rx="16" fill="#ffffff" stroke="#1e293b" stroke-width="6"/>
+  <path d="M105 320 L135 320 M120 305 L120 335" stroke="#10b981" stroke-width="5" stroke-linecap="round"/>
+  
+  <!-- Node 2 -->
+  <rect x="350" y="290" width="60" height="60" rx="16" fill="#ffffff" stroke="#1e293b" stroke-width="6"/>
+  <path d="M365 320 L395 320 M380 305 L380 335" stroke="#10b981" stroke-width="5" stroke-linecap="round"/>
+  
+  <!-- Node 3 -->
+  <rect x="220" y="390" width="60" height="60" rx="16" fill="#ffffff" stroke="#1e293b" stroke-width="6"/>
+  <path d="M235 420 L265 420 M250 405 L250 435" stroke="#10b981" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Center Verification Badge -->
+  <circle cx="250" cy="320" r="36" fill="#10b981" stroke="#ffffff" stroke-width="8"/>
+  <path d="M232 320 L244 332 L268 308" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

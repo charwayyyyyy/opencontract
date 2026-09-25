@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Search,
@@ -63,72 +64,88 @@ export default async function HomePage() {
             }}
           />
 
-          <div className="container-editorial relative py-16 md:py-24 lg:py-28">
-            <div className="max-w-3xl">
-              {/* Eyebrow */}
-              <div className="demo-banner mb-6 inline-flex items-center gap-1.5 font-medium">
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                Live Civic Transparency Platform
+          <div className="container-editorial relative py-12 md:py-24 lg:py-28">
+            <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
+              <div className="flex-1 max-w-3xl">
+                {/* Eyebrow */}
+                <div className="demo-banner mb-6 inline-flex items-center gap-1.5 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  Live Civic Transparency Platform
+                </div>
+
+                {/* Headline */}
+                <h1 className="text-display text-balance text-text-primary mb-6 leading-tight">
+                  Public money
+                  <br className="hidden sm:block" />
+                  should leave
+                  <br className="hidden sm:block" />
+                  <span className="text-primary">a public trail.</span>
+                </h1>
+
+                <p className="text-body-lg text-text-secondary max-w-xl mb-8 leading-relaxed">
+                  OpenContract makes public procurement easier to trace, understand
+                  and independently verify — from tender publication to contract
+                  completion.
+                </p>
+
+                {/* Quick Search */}
+                <form action="/explore" method="GET" className="mb-6 max-w-xl">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center border-2 border-border focus-within:border-primary bg-surface rounded-lg p-2 sm:px-3 sm:py-2 shadow-xs transition-colors gap-2">
+                    <div className="flex flex-1 items-center px-2 sm:px-0">
+                      <Search className="h-5 w-5 text-text-muted mr-2 flex-shrink-0" />
+                      <input
+                        type="search"
+                        name="q"
+                        placeholder="Search project title, buyer, OCID..."
+                        className="w-full bg-transparent border-none outline-none text-sm text-text-primary placeholder:text-text-muted"
+                      />
+                    </div>
+                    <Button type="submit" size="sm" className="w-full sm:w-auto flex-shrink-0">
+                      Search
+                    </Button>
+                  </div>
+                  <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-text-muted">
+                    <span>Try:</span>
+                    <Link href="/explore?q=Tema" className="hover:text-primary underline">Tema Motorway</Link>
+                    <span>·</span>
+                    <Link href="/explore?q=Medicines" className="hover:text-primary underline">Essential Medicines</Link>
+                    <span>·</span>
+                    <Link href="/explore?q=Cloud" className="hover:text-primary underline">Cloud Infrastructure</Link>
+                    <span>·</span>
+                    <Link href="/explore?q=STEM" className="hover:text-primary underline">STEM Complex</Link>
+                  </div>
+                </form>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link href="/explore">
+                    <Button size="lg" className="gap-2 w-full shadow-xs">
+                      Explore contracts
+                      <ArrowRight className="h-4 w-4" aria-hidden />
+                    </Button>
+                  </Link>
+                  <Link href="/verify">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="gap-2 w-full bg-surface hover:bg-muted/50"
+                    >
+                      <FileCheck className="h-4 w-4" aria-hidden />
+                      Verify a document
+                    </Button>
+                  </Link>
+                </div>
               </div>
-
-              {/* Headline */}
-              <h1 className="text-display text-balance text-text-primary mb-6 leading-tight">
-                Public money
-                <br />
-                should leave
-                <br />
-                <span className="text-primary">a public trail.</span>
-              </h1>
-
-              <p className="text-body-lg text-text-secondary max-w-xl mb-8 leading-relaxed">
-                OpenContract makes public procurement easier to trace, understand
-                and independently verify — from tender publication to contract
-                completion.
-              </p>
-
-              {/* Quick Search */}
-              <form action="/explore" method="GET" className="mb-6 max-w-xl">
-                <div className="flex items-center border-2 border-border focus-within:border-primary bg-surface rounded-lg px-3 py-2 shadow-xs transition-colors">
-                  <Search className="h-5 w-5 text-text-muted mr-2 flex-shrink-0" />
-                  <input
-                    type="search"
-                    name="q"
-                    placeholder="Search by project title, buyer, or OCID (e.g. Tema, Cloud, Medicines)..."
-                    className="w-full bg-transparent border-none outline-none text-sm text-text-primary placeholder:text-text-muted"
+              
+              <div className="flex-1 w-full max-w-md lg:max-w-xl relative">
+                <div className="relative w-full aspect-square overflow-visible drop-shadow-xl">
+                  <Image 
+                    src="/hero-illustration.svg" 
+                    alt="Minimalist illustration representing transparency and blockchain verification in public procurement" 
+                    fill
+                    className="object-contain"
+                    priority
                   />
-                  <Button type="submit" size="sm" className="ml-2 flex-shrink-0">
-                    Search
-                  </Button>
                 </div>
-                <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-text-muted">
-                  <span>Try:</span>
-                  <Link href="/explore?q=Tema" className="hover:text-primary underline">Tema Motorway</Link>
-                  <span>·</span>
-                  <Link href="/explore?q=Medicines" className="hover:text-primary underline">Essential Medicines</Link>
-                  <span>·</span>
-                  <Link href="/explore?q=Cloud" className="hover:text-primary underline">Cloud Infrastructure</Link>
-                  <span>·</span>
-                  <Link href="/explore?q=STEM" className="hover:text-primary underline">STEM Complex</Link>
-                </div>
-              </form>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Link href="/explore">
-                  <Button size="lg" className="gap-2 w-full sm:w-auto shadow-xs">
-                    Explore contracts
-                    <ArrowRight className="h-4 w-4" aria-hidden />
-                  </Button>
-                </Link>
-                <Link href="/verify">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="gap-2 w-full sm:w-auto bg-surface hover:bg-muted/50"
-                  >
-                    <FileCheck className="h-4 w-4" aria-hidden />
-                    Verify a document
-                  </Button>
-                </Link>
               </div>
             </div>
           </div>
