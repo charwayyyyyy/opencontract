@@ -18,6 +18,17 @@ import bcrypt from "bcryptjs";
 const DEMO_PASSWORD_HASH = bcrypt.hashSync("demo1234", 12);
 
 async function main() {
+  console.log("🌱 Checking if demo data needs seeding…");
+
+  const existing = await prisma.procurement.findUnique({
+    where: { ocid: "ocds-demo-2026-000001" }
+  });
+
+  if (existing) {
+    console.log("✅ Demo data is already seeded. Skipping to prevent duplicates.");
+    return;
+  }
+
   console.log("🌱 Seeding demo data…");
 
   // ── Organizations ─────────────────────────────────────────
