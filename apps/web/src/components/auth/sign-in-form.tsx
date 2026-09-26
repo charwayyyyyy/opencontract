@@ -80,7 +80,7 @@ export function SignInForm() {
       });
 
       if (result?.error) {
-        setError("Could not sign in with demo credentials. Please verify database seeding.");
+        setError(`Could not sign in: ${result.error}. (Please verify database seeding)`);
       } else {
         const dest = callbackUrl || role.target;
         router.push(dest);

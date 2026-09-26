@@ -7,6 +7,13 @@ import { signInSchema } from "@opencontract/validation";
 
 import { authConfig } from "./auth.config";
 
+if (process.env.VERCEL) {
+  // If we're on Vercel, remove locally configured NEXTAUTH_URL or AUTH_URL 
+  // to allow NextAuth to correctly use VERCEL_URL and avoid CSRF/Cookie Domain validation failures.
+  delete process.env.NEXTAUTH_URL;
+  delete process.env.AUTH_URL;
+}
+
 declare module "next-auth" {
   interface Session {
     user: {
