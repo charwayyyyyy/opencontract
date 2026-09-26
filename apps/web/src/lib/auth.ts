@@ -1,4 +1,4 @@
-import NextAuth, { type NextAuthConfig } from "next-auth";
+import NextAuth, { type NextAuthConfig, CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@opencontract/database/client";
@@ -7,11 +7,11 @@ import { signInSchema } from "@opencontract/validation";
 
 import { authConfig } from "./auth.config";
 
-if (process.env.VERCEL) {
-  // If we're on Vercel, remove locally configured NEXTAUTH_URL or AUTH_URL 
-  // to allow NextAuth to correctly use VERCEL_URL and avoid CSRF/Cookie Domain validation failures.
-  delete process.env.NEXTAUTH_URL;
-  delete process.env.AUTH_URL;
+class CustomAuthError extends CredentialsSignin {
+  constructor(message: string) {
+    super(message);
+    this.code = message;
+  }
 }
 
 declare module "next-auth" {
@@ -40,34 +40,43 @@ export const nextAuthConfig: NextAuthConfig = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const parsed = signInSchema.safeParse(credentials);
-        if (!parsed.success) return null;
+        try {
+          const parsed = signInSchema.safeParse(credentials);
+          if (!parsed.success) throw new CustomAuthError("Invalid credentials format");
 
-        const { email, password } = parsed.data;
+          const { email, password } = parsed.data;
 
-        const user = await prisma.user.findUnique({
-          where: { email },
-          select: {
-            id: true,
-            email: true,
-            name: true,
-            role: true,
-            passwordHash: true,
-            isActive: true,
-          },
-        });
+          const user = await prisma.user.findUnique({
+            where: { email },
+            select: {
+              id: true,
+              email: true,
+              name: true,
+              role: true,
+              passwordHash: true,
+              isActive: true,
+            },
+          });
 
-        if (!user || !user.passwordHash || !user.isActive) return null;
+          if (!user) throw new CustomAuthError("User not found in database");
+          if (!user.passwordHash) throw new CustomAuthError("User has no password");
+          if (!user.isActive) throw new CustomAuthError("User is inactive");
 
-        const isValid = await bcrypt.compare(password, user.passwordHash);
-        if (!isValid) return null;
+          const isValid = await bcrypt.compare(password, user.passwordHash);
+          if (!isValid) throw new CustomAuthError("Incorrect password");
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        };
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          };
+        } catch (error: any) {
+          console.error("AUTH ERROR:", error);
+          // Return null instead of throwing, which NextAuth will interpret as CredentialsSignin.
+          // If the UI changes from Configuration to CredentialsSignin, we know this block is catching an exception!
+          return null;
+        }
       },
     }),
   ],
